@@ -8,9 +8,11 @@ import { AuthProvider } from "@/context/AuthContext";
 import { ShopLayout } from "@/layouts/ShopLayout";
 import { Login } from "@/pages/login/Login";
 import { Products } from "@/pages/products/Products";
+import { Product } from "@/pages/products/Product";
 
 import { Toaster } from "@/components/shared/sonner";
 
+import "./i18n";
 import "./index.css";
 
 const queryClient = new QueryClient();
@@ -27,6 +29,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Products /> },
       { path: "products", element: <Products /> },
+      { path: "product", element: <Product /> },
     ],
   },
 ]);
