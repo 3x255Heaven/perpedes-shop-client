@@ -133,38 +133,28 @@ export const ProductDetails = () => {
       <div className="flex flex-col gap-2 flex-1">
         <Card className="w-full h-[600px] rounded-none border-none shadow-none bg-muted/50">
           <CardContent className="p-0 flex justify-center items-center h-full">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={selectedImage}
-                src={product.images?.[selectedImage]?.imageUrl}
-                alt={product.name}
-                className="max-w-full max-h-[500px] object-contain"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              />
-            </AnimatePresence>
+            <img
+              key={selectedImage}
+              src={product.images?.[selectedImage]?.imageUrl}
+              alt={product.name}
+              className="max-w-full max-h-[500px] object-contain opacity-0 transition-opacity duration-500"
+              onLoad={(e) => e.currentTarget.classList.add("opacity-100")}
+            />
           </CardContent>
         </Card>
 
         <div className="grid grid-cols-3 gap-2 w-full">
           {product.images?.map((image, index) => (
-            <motion.img
+            <img
               key={index}
               src={image.imageUrl}
               alt={`Thumbnail ${index + 1}`}
               onClick={() => setSelectedImage(index)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
               className={cn(
-                "w-full h-48 object-contain cursor-pointer bg-muted/50 transition-all",
+                "w-full h-48 object-contain cursor-pointer bg-muted/50 opacity-0 transition-opacity duration-500",
                 index === selectedImage && "border border-gray-300"
               )}
+              onLoad={(e) => e.currentTarget.classList.add("opacity-100")}
             />
           ))}
         </div>
