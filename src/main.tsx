@@ -28,8 +28,8 @@ const router = createBrowserRouter([
     errorElement: <>NOT FOUND</>, //TODO
     children: [
       { index: true, element: <Products /> },
+      { path: "products/:id", element: <Product /> },
       { path: "products", element: <Products /> },
-      { path: "product", element: <Product /> },
     ],
   },
 ]);

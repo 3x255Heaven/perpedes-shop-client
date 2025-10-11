@@ -4,13 +4,13 @@ import { Footer } from "@/layouts/partials/Footer";
 
 export const ShopLayout = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <div className="min-h-screen flex flex-col items-center w-[80%]">
-        <div className="w-full flex flex-col flex-1">
-          <Header />
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      <div className="flex flex-col flex-1 w-full lg:max-w-[80%] px-4 sm:px-6 lg:px-8 mx-auto">
+        <Header />
+        <main className="flex-1 w-full">
           <Outlet />
-          <Footer />
-        </div>
+        </main>
+        <Footer />
       </div>
     </div>
   );

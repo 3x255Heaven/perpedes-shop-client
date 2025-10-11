@@ -49,7 +49,7 @@ export const Login = () => {
                   <div className="flex flex-col items-center text-center">
                     <h1 className="text-2xl font-bold">Welcome</h1>
                     <p className="text-muted-foreground text-balance">
-                      Login to Perpedes PIM
+                      Login to Perpedes
                     </p>
                   </div>
                   <div className="grid gap-3">
@@ -80,27 +80,6 @@ export const Login = () => {
                   >
                     {isPending ? "Logging in..." : "Login"}
                   </Button>
-                  <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                    <span className="bg-card text-muted-foreground relative z-10 px-2">
-                      Or continue with
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-1">
-                    <Button
-                      variant="outline"
-                      type="button"
-                      className="w-full cursor-pointer"
-                      disabled
-                    >
-                      <span className="sr-only">Login with Authentik</span>
-                    </Button>
-                  </div>
-                  <div className="text-center text-sm">
-                    Don&apos;t have an account?{" "}
-                    <a href="#" className="underline underline-offset-4">
-                      Reach out to your System Administrator
-                    </a>
-                  </div>
                 </div>
               </form>
               <div className="bg-muted relative hidden md:block">

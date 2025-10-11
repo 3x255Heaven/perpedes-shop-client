@@ -1,23 +1,28 @@
+import { useNavigate } from "react-router";
 import { Card, CardContent } from "@/components/shared/card";
+import type { ProductPreview } from "@/hooks/useProducts";
 
-type Product = {
-  id: number;
-  name: string;
-  image: string;
-};
+export const ProductCard = ({ product }: { product: ProductPreview }) => {
+  const navigate = useNavigate();
 
-export const ProductCard = ({ product }: { product: Product }) => {
   return (
-    <div className="flex flex-col justify-center gap-4">
+    <div
+      className="flex flex-col justify-center gap-4 cursor-pointer"
+      onClick={() => {
+        navigate(`/products/${product.productId}`);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }}
+    >
       <Card
-        key={product.id}
+        key={product.productId}
         className="shadow-none border-0 flex flex-col items-center bg-muted/50 aspect-square"
       >
         <CardContent className="p-4 flex flex-col items-center justify-center h-full w-full">
           <img
-            src={product.image}
+            src={product.images[0].imageUrl}
             alt={product.name}
-            className="w-[85%] h-[85%] object-contain"
+            className="w-[85%] h-[85%] object-contain opacity-0 transition-opacity duration-500"
+            onLoad={(e) => e.currentTarget.classList.add("opacity-100")}
           />
         </CardContent>
       </Card>
