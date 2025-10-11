@@ -29,13 +29,7 @@ export const ProductSimilar = () => {
     );
   }
 
-  if (!data || data.products.length === 0) {
-    return (
-      <div className="w-full flex justify-center items-center p-8 text-gray-500">
-        No similar products found.
-      </div>
-    );
-  }
+  if (!data || data.products.length === 0) return null;
 
   return (
     <div className="w-full flex flex-col justify-center p-8">
