@@ -12,11 +12,11 @@ export const ColorPicker = ({
   selectedColors,
   onChange,
 }: ColorPickerProps) => {
-  const toggleColor = (colorName: string) => {
-    if (selectedColors.includes(colorName)) {
-      onChange(selectedColors.filter((c) => c !== colorName));
+  const toggleColor = (colorId: string) => {
+    if (selectedColors.includes(colorId)) {
+      onChange(selectedColors.filter((id) => id !== colorId));
     } else {
-      onChange([...selectedColors, colorName]);
+      onChange([...selectedColors, colorId]);
     }
   };
 
@@ -24,12 +24,12 @@ export const ColorPicker = ({
     <div className="flex flex-wrap gap-3">
       {colors.map((color) => {
         const hex = colorMap[color.name.toLowerCase()] || "#ccc";
-        const isSelected = selectedColors.includes(color.name);
+        const isSelected = selectedColors.includes(color.id.toString());
 
         return (
           <button
             key={color.id}
-            onClick={() => toggleColor(color.name)}
+            onClick={() => toggleColor(color.id.toString())}
             className={`relative w-8 h-8 rounded-full border transition-all
               ${isSelected ? "border-black" : "border-gray-300"}
             `}

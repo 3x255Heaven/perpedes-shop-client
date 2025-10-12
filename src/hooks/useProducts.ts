@@ -76,15 +76,6 @@ type ProductSimilarResponse = {
   totalCount: number;
 };
 
-const getNextPageParam = (lastPage: {
-  currentPage: number;
-  totalPages: number;
-}) => {
-  return lastPage.currentPage + 1 < lastPage.totalPages
-    ? lastPage.currentPage + 1
-    : undefined;
-};
-
 export function useProductShoeSelectionQuery(productId: string | undefined) {
   return useQuery<ProductUnitsResponse>({
     queryKey: ["catalog", "products", productId, "selection-options"],
@@ -150,22 +141,27 @@ export function useSimilarProductsQuery(
 export const useProductsInfiniteQuery = (
   size: number,
   sort: string,
-  order: string
+  order: string,
+  filters: Record<string, string[]> = {}
 ) => {
   return useInfiniteQuery<ProductsResponse>({
-    queryKey: ["catalog", size, sort, order],
-    queryFn: async ({ pageParam }) => {
+    queryKey: ["catalog", size, sort, order, filters],
+    queryFn: async ({ pageParam = 0 }) => {
       const response = await axiosInstance.get("/catalog", {
         params: {
           page: pageParam,
           size,
           sort: `${sort},${order}`,
+          ...filters,
         },
       });
 
       return response.data;
     },
+    getNextPageParam: (lastPage) =>
+      lastPage.currentPage < lastPage.totalPages - 1
+        ? lastPage.currentPage + 1
+        : undefined,
     initialPageParam: 0,
-    getNextPageParam,
   });
 };

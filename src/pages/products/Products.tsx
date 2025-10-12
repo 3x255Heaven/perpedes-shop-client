@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ListFilterPlus, ListFilter } from "lucide-react";
+import { useSearchParams } from "react-router";
 
 import { cn } from "@/lib/utils";
 import { useProductsInfiniteQuery } from "@/hooks/useProducts";
@@ -13,12 +14,27 @@ import { Spinner } from "@/components/shared/spinner";
 
 export const Products = () => {
   const [showFilters, setShowFilters] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const filterParams = useMemo(() => {
+    const params: Record<string, string[]> = {};
+
+    for (const [key, value] of searchParams.entries()) {
+      if (!params[key]) params[key] = [];
+      params[key].push(value);
+    }
+
+    return params;
+  }, [searchParams]);
 
   const {
     data: productsData,
     isLoading: isProductsLoading,
     isError: isProductsError,
-  } = useProductsInfiniteQuery(20, "name", "asc");
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useProductsInfiniteQuery(20, "name", "asc", filterParams);
 
   const {
     data: filtersData,
@@ -29,9 +45,16 @@ export const Products = () => {
   const isLoading = isProductsLoading || isFiltersLoading;
   const isError = isProductsError || isFiltersError;
 
+  const isFilteringApplied = Array.from(searchParams).length > 0;
   const products = productsData
     ? productsData.pages.flatMap((page) => page.products)
     : [];
+
+  const loadMore = () => {
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
 
   if (isLoading) {
     return (
@@ -94,7 +117,21 @@ export const Products = () => {
               transition={{ duration: 0.7 }}
               className="py-6 overflow-y-auto"
             >
-              <h2 className="font-semibold mb-4 border-b pb-4 mr-6">Filter</h2>
+              <div className="flex justify-between items-center mb-4 border-b pb-4 mr-6">
+                <h2 className="font-semibold">Filter</h2>
+                {isFilteringApplied && (
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => {
+                      setSearchParams({});
+                    }}
+                    className="text-sm"
+                  >
+                    Clear All
+                  </Button>
+                )}
+              </div>
               <Filter filtersData={filtersData} />
             </motion.aside>
           )}
@@ -118,9 +155,17 @@ export const Products = () => {
             ))}
           </motion.div>
 
-          <div className="flex justify-center mt-12">
-            <Button className="px-8 py-6 text-lg rounded">More Products</Button>
-          </div>
+          {hasNextPage && (
+            <div className="flex justify-center mt-12">
+              <Button
+                className="px-8 py-6 text-lg rounded"
+                onClick={loadMore}
+                disabled={isFetchingNextPage}
+              >
+                {isFetchingNextPage ? "Loading..." : "More Products"}
+              </Button>
+            </div>
+          )}
         </motion.main>
       </div>
     </>

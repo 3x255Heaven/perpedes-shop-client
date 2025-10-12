@@ -19,7 +19,7 @@ export const ProductCard = ({ product }: { product: ProductPreview }) => {
       >
         <CardContent className="p-4 flex flex-col items-center justify-center h-full w-full">
           <img
-            src={product.images[0].imageUrl}
+            src={product.images[0]?.imageUrl}
             alt={product.name}
             className="w-[85%] h-[85%] object-contain opacity-0 transition-opacity duration-500"
             onLoad={(e) => e.currentTarget.classList.add("opacity-100")}
