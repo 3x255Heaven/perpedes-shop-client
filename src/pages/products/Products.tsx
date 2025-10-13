@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { ListFilterPlus, ListFilter } from "lucide-react";
 import { useParams, useSearchParams } from "react-router";
 
-import { cn } from "@/lib/utils";
+import { cn, isMobile } from "@/lib/utils";
 import { useProductsInfiniteQuery } from "@/hooks/useProducts";
 import { useFilters } from "@/hooks/useFilters";
 
@@ -25,8 +25,6 @@ export const Products = () => {
     }
 
     for (const [key, value] of searchParams.entries()) {
-      console.log(key);
-      console.log(value);
       if (!params[key]) params[key] = [];
       params[key].push(value);
     }
@@ -49,6 +47,7 @@ export const Products = () => {
     isError: isFiltersError,
   } = useFilters();
 
+  const isMobileDevice = isMobile();
   const pageTitle = category
     ? filtersData
       ? filtersData.shoeTypes.find((type) => type.id === Number(category))?.name
@@ -110,7 +109,7 @@ export const Products = () => {
       <div className="flex flex-1">
         <motion.aside
           animate={{
-            width: showFilters ? 256 : 0,
+            width: showFilters ? (isMobileDevice ? "100%" : "256px") : 0,
             opacity: showFilters ? 1 : 0,
           }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -144,11 +143,18 @@ export const Products = () => {
             <p className="text-lg font-medium ">No products found.</p>
           </div>
         ) : (
-          <main className="flex-1 p-8 transition-all duration-500 ease-in-out">
+          <main
+            className={cn(
+              "flex-1 p-8 transition-all duration-500 ease-in-out",
+              showFilters && isMobileDevice ? "hidden" : ""
+            )}
+          >
             <div
               className={cn(
                 "grid gap-2",
-                showFilters ? "grid-cols-4" : "grid-cols-5"
+                showFilters
+                  ? "lg:grid-cols-4 grid-cols-2"
+                  : "lg:grid-cols-5 grid-cols-2"
               )}
             >
               {products.map((product) => (
