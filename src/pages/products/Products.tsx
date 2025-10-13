@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ListFilterPlus, ListFilter } from "lucide-react";
 import { useSearchParams } from "react-router";
 
@@ -13,7 +13,7 @@ import { ProductCard } from "@/components/partials/ProductCard";
 import { Spinner } from "@/components/shared/spinner";
 
 export const Products = () => {
-  const [showFilters, setShowFilters] = useState(true);
+  const [showFilters, setShowFilters] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const filterParams = useMemo(() => {
@@ -51,9 +51,7 @@ export const Products = () => {
     : [];
 
   const loadMore = () => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
+    if (hasNextPage && !isFetchingNextPage) fetchNextPage();
   };
 
   if (isLoading) {
@@ -87,55 +85,54 @@ export const Products = () => {
     <>
       <div className="mt-12 mb-6 px-8 py-4 flex justify-between items-center">
         <h1 className="text-4xl font-semibold">All Shoes</h1>
-        <Button
-          variant="secondary"
-          className={cn(
-            "rounded-sm px-3 py-1",
-            showFilters && "bg-black text-white hover:bg-black"
-          )}
+        <div
+          className="flex justify-center items-center p-2 bg-secondary rounded cursor-pointer font-bold"
           onClick={() => setShowFilters(!showFilters)}
         >
-          {showFilters ? <ListFilterPlus /> : <ListFilter />}
-        </Button>
+          <p className="pr-2">Filters</p>
+          <Button
+            variant="secondary"
+            className={cn(
+              "rounded-sm px-3 py-1 cursor-pointer",
+              showFilters && "bg-black text-white hover:bg-black"
+            )}
+          >
+            {showFilters ? <ListFilterPlus /> : <ListFilter />}
+          </Button>
+        </div>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
-        <AnimatePresence initial={false}>
-          {showFilters && (
-            <motion.aside
-              initial={{ width: 0, opacity: 0 }}
-              animate={{
-                width: 256,
-                opacity: 1,
-                transition: { duration: 0.7 },
-              }}
-              exit={{
-                width: 0,
-                opacity: 0,
-                transition: { duration: 0.7 },
-              }}
-              transition={{ duration: 0.7 }}
-              className="py-6 overflow-y-auto"
-            >
-              <div className="flex justify-between items-center mb-4 border-b pb-4 mr-6">
-                <h2 className="font-semibold">Filter</h2>
-                {isFilteringApplied && (
-                  <Button
-                    variant="default"
-                    size="sm"
-                    onClick={() => {
-                      setSearchParams({});
-                    }}
-                    className="text-sm"
-                  >
-                    Clear All
-                  </Button>
-                )}
-              </div>
-              <Filter filtersData={filtersData} />
-            </motion.aside>
-          )}
-        </AnimatePresence>
+        <motion.aside
+          animate={{
+            width: showFilters ? 256 : 0,
+            opacity: showFilters ? 1 : 0,
+          }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+          className="py-6 overflow-y-auto"
+        >
+          <div
+            className={cn(
+              "transition-opacity duration-300",
+              showFilters ? "opacity-100" : "opacity-0 pointer-events-none"
+            )}
+          >
+            <div className="flex justify-between items-center mb-4 border-b pb-4 mr-6">
+              <h2 className="font-semibold">Filter</h2>
+              {isFilteringApplied && (
+                <Button
+                  variant="default"
+                  size="sm"
+                  onClick={() => setSearchParams({})}
+                  className="text-sm"
+                >
+                  Clear All
+                </Button>
+              )}
+            </div>
+            <Filter filtersData={filtersData} />
+          </div>
+        </motion.aside>
 
         <motion.main
           layout
@@ -145,10 +142,10 @@ export const Products = () => {
           <motion.div
             layout
             className={cn(
-              "grid gap-10",
-              showFilters ? "grid-cols-2" : "grid-cols-3"
+              "grid gap-2",
+              showFilters ? "grid-cols-4" : "grid-cols-5"
             )}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
           >
             {products.map((product) => (
               <ProductCard key={product.name} product={product} />
