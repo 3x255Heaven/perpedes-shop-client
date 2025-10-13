@@ -73,14 +73,6 @@ export const Products = () => {
     );
   }
 
-  if (products.length === 0) {
-    return (
-      <div className="h-[80vh] p-16 flex flex-col justify-center items-center text-center">
-        <p className="text-lg font-medium ">No products found.</p>
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="mt-12 mb-6 px-8 py-4 flex justify-between items-center">
@@ -102,68 +94,65 @@ export const Products = () => {
         </div>
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1">
         <motion.aside
           animate={{
             width: showFilters ? 256 : 0,
             opacity: showFilters ? 1 : 0,
           }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="py-6 overflow-y-auto"
+          className="py-6 overflow-hidden"
         >
-          <div
-            className={cn(
-              "transition-opacity duration-300",
-              showFilters ? "opacity-100" : "opacity-0 pointer-events-none"
-            )}
-          >
-            <div className="flex justify-between items-center mb-4 border-b pb-4 mr-6">
-              <h2 className="font-semibold">Filter</h2>
-              {isFilteringApplied && (
-                <Button
-                  variant="default"
-                  size="sm"
-                  onClick={() => setSearchParams({})}
-                  className="text-sm"
-                >
-                  Clear All
-                </Button>
-              )}
-            </div>
-            <Filter filtersData={filtersData} />
-          </div>
-        </motion.aside>
-
-        <motion.main
-          layout
-          className="flex-1 p-8 overflow-y-auto"
-          transition={{ duration: 0.4 }}
-        >
-          <motion.div
-            layout
-            className={cn(
-              "grid gap-2",
-              showFilters ? "grid-cols-4" : "grid-cols-5"
-            )}
-            transition={{ duration: 0.4, ease: "easeInOut" }}
-          >
-            {products.map((product) => (
-              <ProductCard key={product.name} product={product} />
-            ))}
-          </motion.div>
-
-          {hasNextPage && (
-            <div className="flex justify-center mt-12">
-              <Button
-                className="px-8 py-6 text-lg rounded"
-                onClick={loadMore}
-                disabled={isFetchingNextPage}
-              >
-                {isFetchingNextPage ? "Loading..." : "More Products"}
-              </Button>
+          {showFilters && (
+            <div className="opacity-100">
+              <div className="flex justify-between items-center mb-4 border-b pb-4 mr-6">
+                <h2 className="font-semibold">Filter</h2>
+                {isFilteringApplied && (
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => setSearchParams({})}
+                    className="text-sm"
+                  >
+                    Clear All
+                  </Button>
+                )}
+              </div>
+              <Filter filtersData={filtersData} />
             </div>
           )}
-        </motion.main>
+        </motion.aside>
+
+        {products.length === 0 ? (
+          <div className="h-[80vh] w-full p-16 flex flex-col justify-center items-center text-center">
+            <p className="text-lg font-medium ">No products found.</p>
+          </div>
+        ) : (
+          <main className="flex-1 p-8 transition-all duration-500 ease-in-out">
+            <div
+              className={cn(
+                "grid gap-2",
+                showFilters ? "grid-cols-4" : "grid-cols-5"
+              )}
+            >
+              {products.map((product) => (
+                <ProductCard key={product.name} product={product} />
+              ))}
+            </div>
+
+            {hasNextPage && (
+              <div className="flex justify-center mt-12 mb-8">
+                <Button
+                  className="px-8 py-6 text-lg rounded"
+                  onClick={loadMore}
+                  disabled={isFetchingNextPage}
+                >
+                  {isFetchingNextPage ? "Loading..." : "More Products"}
+                </Button>
+              </div>
+            )}
+          </main>
+        )}
       </div>
     </>
   );
