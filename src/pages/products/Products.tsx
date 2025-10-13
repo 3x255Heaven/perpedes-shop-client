@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ListFilterPlus, ListFilter } from "lucide-react";
-import { useSearchParams } from "react-router";
+import { useParams, useSearchParams } from "react-router";
 
 import { cn } from "@/lib/utils";
 import { useProductsInfiniteQuery } from "@/hooks/useProducts";
@@ -13,19 +13,26 @@ import { ProductCard } from "@/components/partials/ProductCard";
 import { Spinner } from "@/components/shared/spinner";
 
 export const Products = () => {
+  const { category } = useParams<{ category: string }>();
   const [showFilters, setShowFilters] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const filterParams = useMemo(() => {
     const params: Record<string, string[]> = {};
 
+    if (category) {
+      params["shoeTypes"] = [category];
+    }
+
     for (const [key, value] of searchParams.entries()) {
+      console.log(key);
+      console.log(value);
       if (!params[key]) params[key] = [];
       params[key].push(value);
     }
 
     return params;
-  }, [searchParams]);
+  }, [searchParams, category]);
 
   const {
     data: productsData,
@@ -41,6 +48,12 @@ export const Products = () => {
     isLoading: isFiltersLoading,
     isError: isFiltersError,
   } = useFilters();
+
+  const pageTitle = category
+    ? filtersData
+      ? filtersData.shoeTypes.find((type) => type.id === Number(category))?.name
+      : "All Shoes"
+    : "All Shoes";
 
   const isLoading = isProductsLoading || isFiltersLoading;
   const isError = isProductsError || isFiltersError;
@@ -76,7 +89,7 @@ export const Products = () => {
   return (
     <>
       <div className="mt-12 mb-6 px-8 py-4 flex justify-between items-center">
-        <h1 className="text-4xl font-semibold">All Shoes</h1>
+        <h1 className="text-4xl font-semibold">{pageTitle}</h1>
         <div
           className="flex justify-center items-center p-2 bg-secondary rounded cursor-pointer font-bold"
           onClick={() => setShowFilters(!showFilters)}
@@ -118,7 +131,10 @@ export const Products = () => {
                   </Button>
                 )}
               </div>
-              <Filter filtersData={filtersData} />
+              <Filter
+                filtersData={filtersData}
+                isShoeTypeFilterAvailable={category === undefined}
+              />
             </div>
           )}
         </motion.aside>

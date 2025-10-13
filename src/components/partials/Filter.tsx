@@ -6,7 +6,13 @@ import { Label } from "@/components/shared/label";
 import type { Filters } from "@/hooks/useFilters";
 
 export const Filter = React.memo(
-  ({ filtersData }: { filtersData: Filters }) => {
+  ({
+    filtersData,
+    isShoeTypeFilterAvailable,
+  }: {
+    filtersData: Filters;
+    isShoeTypeFilterAvailable: boolean;
+  }) => {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [selected, setSelected] = useState({
@@ -98,30 +104,35 @@ export const Filter = React.memo(
           ))}
         </div>
 
-        <div className="mb-6 mr-6 border-b pb-4">
-          <h3 className="font-medium text-sm mb-2">Shoe Type</h3>
-          {filtersData.shoeTypes.map((shoeType) => (
-            <div key={shoeType.id} className="flex items-center space-x-2 mb-2">
-              <Checkbox
-                id={shoeType.id.toString()}
-                checked={selected.shoeTypes.includes(shoeType.id.toString())}
-                onCheckedChange={(checked) =>
-                  updateFilter(
-                    "shoeTypes",
-                    shoeType.id.toString(),
-                    Boolean(checked)
-                  )
-                }
-              />
-              <Label
-                htmlFor={shoeType.id.toString()}
-                className="text-sm font-normal"
+        {isShoeTypeFilterAvailable && (
+          <div className="mb-6 mr-6 border-b pb-4">
+            <h3 className="font-medium text-sm mb-2">Shoe Type</h3>
+            {filtersData.shoeTypes.map((shoeType) => (
+              <div
+                key={shoeType.id}
+                className="flex items-center space-x-2 mb-2"
               >
-                {shoeType.name}
-              </Label>
-            </div>
-          ))}
-        </div>
+                <Checkbox
+                  id={shoeType.id.toString()}
+                  checked={selected.shoeTypes.includes(shoeType.id.toString())}
+                  onCheckedChange={(checked) =>
+                    updateFilter(
+                      "shoeTypes",
+                      shoeType.id.toString(),
+                      Boolean(checked)
+                    )
+                  }
+                />
+                <Label
+                  htmlFor={shoeType.id.toString()}
+                  className="text-sm font-normal"
+                >
+                  {shoeType.name}
+                </Label>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="mb-6 mr-6 border-b pb-4">
           <h3 className="font-medium text-sm mb-2">Closure System</h3>

@@ -28,16 +28,16 @@ export const Header = () => {
         <a href="/" className="hover:underline">
           {t("all_shoes")}
         </a>
-        <a href="/" className="hover:underline">
+        <a href="/18" className="hover:underline">
           {t("ballet_flats")}
         </a>
-        <a href="/" className="hover:underline">
+        <a href="/12" className="hover:underline">
           {t("sneakers")}
         </a>
-        <a href="/" className="hover:underline">
+        <a href="/15" className="hover:underline">
           {t("ankle_boots")}
         </a>
-        <a href="/" className="hover:underline">
+        <a href="/14" className="hover:underline">
           {t("sandals")}
         </a>
       </nav>

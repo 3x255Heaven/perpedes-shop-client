@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router";
 import { AuthProvider } from "@/context/AuthContext";
 
 import { ShopLayout } from "@/layouts/ShopLayout";
+import { NotFound } from "@/pages/notfound/NotFound";
 import { Login } from "@/pages/login/Login";
 import { Products } from "@/pages/products/Products";
 import { Product } from "@/pages/products/Product";
@@ -25,11 +26,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <ShopLayout />,
-    errorElement: <>NOT FOUND</>, //TODO
+    errorElement: <NotFound />,
     children: [
       { index: true, element: <Products /> },
+      { path: "/:category", element: <Products /> },
       { path: "products/:id", element: <Product /> },
-      { path: "products", element: <Products /> },
     ],
   },
 ]);
