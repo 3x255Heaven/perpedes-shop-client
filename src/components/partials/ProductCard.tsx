@@ -2,7 +2,13 @@ import { useNavigate } from "react-router";
 import { Card, CardContent } from "@/components/shared/card";
 import type { ProductPreview } from "@/hooks/useProducts";
 
-export const ProductCard = ({ product }: { product: ProductPreview }) => {
+export const ProductCard = ({
+  product,
+  displayName = true,
+}: {
+  product: ProductPreview;
+  displayName: boolean;
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -10,7 +16,6 @@ export const ProductCard = ({ product }: { product: ProductPreview }) => {
       className="flex flex-col justify-center gap-4 cursor-pointer"
       onClick={() => {
         navigate(`/products/${product.productId}`);
-        window.scrollTo({ top: 0, behavior: "smooth" });
       }}
     >
       <Card
@@ -26,7 +31,9 @@ export const ProductCard = ({ product }: { product: ProductPreview }) => {
           />
         </CardContent>
       </Card>
-      <span className="text-lg font-medium ml-2">{product.name}</span>
+      {displayName && (
+        <span className="text-lg font-medium ml-2">{product.name}</span>
+      )}
     </div>
   );
 };
