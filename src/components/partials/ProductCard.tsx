@@ -7,7 +7,7 @@ export const ProductCard = ({
   displayName = true,
 }: {
   product: ProductPreview;
-  displayName: boolean;
+  displayName?: boolean;
 }) => {
   const navigate = useNavigate();
 
