@@ -15,8 +15,7 @@ type Unit = {
   description: string;
   sortOrder: number;
 };
-
-type ProductVariation = {
+export type ProductVariation = {
   id: number;
   articleNumber: string;
   size: string;
@@ -123,7 +122,7 @@ export function useProductQuery(productId: string | undefined) {
 
 export function useSimilarProductsQuery(
   productId: string | undefined,
-  limit: number = 3
+  limit: number = 5
 ) {
   return useQuery<ProductSimilarResponse>({
     queryKey: ["catalog", "products", productId, "similar", limit],

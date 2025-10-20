@@ -1,10 +1,9 @@
 import { useMemo, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 import { Loader2, RefreshCcw } from "lucide-react";
-import { ProductCard } from "@/components/partials/ProductCard";
 import { Button } from "@/components/shared/button";
 import { Card, CardContent } from "@/components/shared/card";
 import { Badge } from "@/components/shared/badge";
@@ -20,22 +19,26 @@ import {
   useProductQuery,
   useProductSizesQuery,
   useSimilarProductsQuery,
+  type ProductVariation,
 } from "@/hooks/useProducts";
 
-const SELECTION_UNITS = ["LEFT", "RIGHT", "PAIR", "UNPAIRED"] as const;
+const SELECTION_UNITS = ["PAIR", "UNPAIRED"] as const;
 
 export const Product = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [products, setProducts] = useState<ProductVariation[]>([]);
+  const [selectedImage, setSelectedImage] = useState<number>(0);
   const [selectedUnit, setSelectedUnit] = useState<string>(SELECTION_UNITS[0]);
-  const [selectedWidth, setSelectedWidth] = useState<string | undefined>(
-    undefined
+  const [selectedWidthPair, setSelectedWidthPair] = useState<string | null>(
+    null
   );
-
-  const [selectedSizes, setSelectedSizes] = useState<{
-    left?: string;
-    right?: string;
-  }>({});
+  const [selectedWidthRight, setSelectedWidthRight] = useState<string | null>(
+    null
+  );
+  const [selectedWidthLeft, setSelectedWidthLeft] = useState<string | null>(
+    null
+  );
 
   const {
     data: product,
@@ -69,17 +72,6 @@ export const Product = () => {
     isError: isPairUnitTypeSizesError,
   } = useProductSizesQuery(id, "PAIR");
 
-  const productSizes = useMemo(() => {
-    if (selectedUnit === "LEFT") return leftUnitTypeSizes;
-    if (selectedUnit === "RIGHT") return rightUnitTypeSizes;
-    if (selectedUnit === "PAIR") return pairUnitTypeSizes;
-    if (selectedUnit === "UNPAIRED") return leftUnitTypeSizes;
-
-    return null;
-  }, [selectedUnit, leftUnitTypeSizes, rightUnitTypeSizes, pairUnitTypeSizes]);
-
-  console.log(productSizes);
-
   const features = useMemo(() => {
     if (!product) return [];
 
@@ -93,6 +85,36 @@ export const Product = () => {
       ...product.soleColors,
     ];
   }, [product]);
+
+  const addProduct = (newProduct: ProductVariation) => {
+    setProducts((prevProducts) => {
+      const filtered = prevProducts.filter(
+        (product) => product.unit !== newProduct.unit
+      );
+      const exists = filtered.some((product) => product.id === newProduct.id);
+
+      if (exists) return filtered;
+      return [...filtered, newProduct];
+    });
+  };
+
+  const removeProduct = (productId: number) => {
+    setProducts((prevProducts) =>
+      prevProducts.filter((product) => product.id !== productId)
+    );
+  };
+
+  const hasProduct = (productId: number) => {
+    return products.some((product) => product.id === productId);
+  };
+
+  const productSelection = (product: ProductVariation) => {
+    if (hasProduct(product.id)) {
+      removeProduct(product.id);
+    } else {
+      addProduct(product);
+    }
+  };
 
   if (
     isProductLoading ||
@@ -151,7 +173,13 @@ export const Product = () => {
     );
   }
 
-  if (!product || !similarProducts || !productSizes) {
+  if (
+    !product ||
+    !similarProducts ||
+    !pairUnitTypeSizes ||
+    !leftUnitTypeSizes ||
+    !rightUnitTypeSizes
+  ) {
     return (
       <div className="flex justify-center items-center h-[80vh]">
         <motion.p
@@ -235,17 +263,21 @@ export const Product = () => {
             ))}
           </div>
         </motion.div>
-
         <div className="w-full flex flex-col justify-center">
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
             {similarProducts.products.map((product) => (
               <div className="border" key={product.name}>
-                <ProductCard product={product} displayName={false} />
+                <img
+                  key={product.productId}
+                  src={product.images[0]?.imageUrl}
+                  alt={product.name}
+                  onClick={() => navigate(`/products/${product.productId}`)}
+                  className="w-full h-28 object-contain cursor-pointer bg-muted/50"
+                />
               </div>
             ))}
           </div>
         </div>
-
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-center gap-3">
           <p className="font-semibold text-lg sm:text-base">Unit:</p>
 
@@ -256,8 +288,8 @@ export const Product = () => {
                   key={unit}
                   onClick={() => {
                     setSelectedUnit(unit);
-                    setSelectedWidth(undefined);
-                    setSelectedSizes({});
+                    setSelectedWidthPair(null);
+                    setProducts([]);
                   }}
                   variant="outline"
                   className={cn(
@@ -272,157 +304,229 @@ export const Product = () => {
             </ButtonGroup>
           </div>
         </div>
+        {selectedUnit === "UNPAIRED" ? (
+          <div className="flex lg:flex-row flex-col gap-2 w-full">
+            <div className="flex flex-col w-full bg-muted/30 p-4 rounded-2xl shadow-sm border border-gray-100">
+              <Badge>Left</Badge>
 
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-center gap-3">
-          <p className="font-semibold text-lg sm:text-base">Width:</p>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-center gap-3">
+                <p className="font-semibold text-lg sm:text-base">Width:</p>
 
-          <div className="flex justify-center sm:justify-end w-full sm:w-auto">
-            <ButtonGroup className="flex flex-wrap justify-center sm:justify-end">
-              {productSizes.availableWidths.map((width) => (
-                <Button
-                  key={width}
-                  variant="outline"
-                  onClick={() => {
-                    setSelectedWidth(width);
-                    setSelectedSizes({});
-                  }}
-                  className={cn(
-                    "text-[10px]",
-                    width === selectedWidth &&
-                      "bg-black text-white hover:bg-black hover:text-white"
-                  )}
-                >
-                  {width}
-                </Button>
-              ))}
-            </ButtonGroup>
+                <div className="flex justify-center sm:justify-end w-full sm:w-auto">
+                  <ButtonGroup className="flex flex-wrap justify-center sm:justify-end">
+                    {leftUnitTypeSizes.availableWidths.map((width) => (
+                      <Button
+                        key={width}
+                        variant="outline"
+                        onClick={() => {
+                          setSelectedWidthLeft(width);
+                          setProducts([]);
+                        }}
+                        className={cn(
+                          "text-[10px]",
+                          width === selectedWidthLeft &&
+                            "bg-black text-white hover:bg-black hover:text-white"
+                        )}
+                      >
+                        {width}
+                      </Button>
+                    ))}
+                  </ButtonGroup>
+                </div>
+              </div>
+
+              {selectedWidthLeft ? (
+                <div className="flex flex-col justify-center items-start">
+                  <div className="flex flex-col w-full">
+                    <p className="font-semibold text-lg sm:text-base my-4">
+                      All sizes
+                    </p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {leftUnitTypeSizes.variationsByWidth[
+                        selectedWidthLeft
+                      ].map((variation) => (
+                        <Button
+                          key={variation.id}
+                          variant="outline"
+                          disabled={!variation.available}
+                          onClick={() => {
+                            productSelection(variation);
+                          }}
+                          className={cn(
+                            !variation.available &&
+                              "opacity-50 cursor-not-allowed",
+                            hasProduct(variation.id) &&
+                              "bg-black text-white hover:bg-black hover:text-white"
+                          )}
+                        >
+                          {variation.size}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Empty className="border mt-4 !p-4">
+                  <EmptyHeader>
+                    <EmptyTitle>Select Width</EmptyTitle>
+                    <EmptyDescription>
+                      In order to see all available sizes for given product,
+                      firstly select Width of the product.
+                    </EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
+              )}
+            </div>
+
+            <div className="flex flex-col w-full bg-muted/30 p-4 rounded-2xl shadow-sm border border-gray-100">
+              <Badge>Right</Badge>
+
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-center gap-3">
+                <p className="font-semibold text-lg sm:text-base">Width:</p>
+
+                <div className="flex justify-center sm:justify-end w-full sm:w-auto">
+                  <ButtonGroup className="flex flex-wrap justify-center sm:justify-end">
+                    {rightUnitTypeSizes.availableWidths.map((width) => (
+                      <Button
+                        key={width}
+                        variant="outline"
+                        onClick={() => {
+                          setSelectedWidthRight(width);
+                          setProducts([]);
+                        }}
+                        className={cn(
+                          "text-[10px]",
+                          width === selectedWidthRight &&
+                            "bg-black text-white hover:bg-black hover:text-white"
+                        )}
+                      >
+                        {width}
+                      </Button>
+                    ))}
+                  </ButtonGroup>
+                </div>
+              </div>
+
+              {selectedWidthRight ? (
+                <div className="flex flex-col justify-center items-start">
+                  <div className="flex flex-col w-full">
+                    <p className="font-semibold text-lg sm:text-base my-4">
+                      All sizes
+                    </p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {rightUnitTypeSizes.variationsByWidth[
+                        selectedWidthRight
+                      ].map((variation) => (
+                        <Button
+                          key={variation.id}
+                          variant="outline"
+                          disabled={!variation.available}
+                          onClick={() => {
+                            productSelection(variation);
+                          }}
+                          className={cn(
+                            !variation.available &&
+                              "opacity-50 cursor-not-allowed",
+                            hasProduct(variation.id) &&
+                              "bg-black text-white hover:bg-black hover:text-white"
+                          )}
+                        >
+                          {variation.size}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Empty className="border mt-4 !p-4">
+                  <EmptyHeader>
+                    <EmptyTitle>Select Width</EmptyTitle>
+                    <EmptyDescription>
+                      In order to see all available sizes for given product,
+                      firstly select Width of the product.
+                    </EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
+              )}
+            </div>
           </div>
-        </div>
-
-        {selectedWidth ? (
-          selectedUnit === "UNPAIRED" ? (
-            <div className="flex flex-col gap-6 w-full">
-              <div className="flex flex-col w-full bg-muted/30 p-4 rounded-2xl shadow-sm border border-gray-100">
-                <Badge>Left</Badge>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {leftUnitTypeSizes?.variationsByWidth[selectedWidth]?.map(
-                    (variation) => (
-                      <Button
-                        key={`left-${variation.id}`}
-                        variant="outline"
-                        disabled={!variation.available}
-                        onClick={() =>
-                          setSelectedSizes((prev) => ({
-                            ...prev,
-                            left:
-                              prev.left !== variation.size
-                                ? variation.size
-                                : undefined,
-                          }))
-                        }
-                        className={cn(
-                          "!min-w-[3rem]",
-                          !variation.available &&
-                            "opacity-50 cursor-not-allowed",
-                          selectedSizes.left === variation.size &&
-                            "bg-black text-white hover:bg-black hover:text-white"
-                        )}
-                      >
-                        {variation.size}
-                      </Button>
-                    )
-                  )}
-                </div>
-              </div>
-
-              <div className="flex justify-center">
-                <div className="w-10 h-[2px] bg-gray-300 rounded-full" />
-              </div>
-
-              <div className="flex flex-col w-full bg-muted/30 p-4 rounded-2xl shadow-sm border border-gray-100">
-                <Badge>Right</Badge>
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {rightUnitTypeSizes?.variationsByWidth[selectedWidth]?.map(
-                    (variation) => (
-                      <Button
-                        key={`right-${variation.id}`}
-                        variant="outline"
-                        disabled={!variation.available}
-                        onClick={() =>
-                          setSelectedSizes((prev) => ({
-                            ...prev,
-                            right:
-                              prev.right !== variation.size
-                                ? variation.size
-                                : undefined,
-                          }))
-                        }
-                        className={cn(
-                          "!min-w-[3rem]",
-                          !variation.available &&
-                            "opacity-50 cursor-not-allowed",
-                          selectedSizes.right === variation.size &&
-                            "bg-black text-white hover:bg-black hover:text-white"
-                        )}
-                      >
-                        {variation.size}
-                      </Button>
-                    )
-                  )}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col justify-center items-start">
-              <div className="flex flex-col w-full bg-muted/30 p-4 rounded-2xl shadow-sm border border-gray-100">
-                <p className="font-semibold mb-2 text-lg">All sizes</p>
-                <div className="flex flex-wrap gap-2">
-                  {productSizes.variationsByWidth[selectedWidth].map(
-                    (variation) => (
-                      <Button
-                        key={variation.id}
-                        variant="outline"
-                        disabled={!variation.available}
-                        onClick={() =>
-                          setSelectedSizes({
-                            left:
-                              selectedSizes.left !== variation.size
-                                ? variation.size
-                                : undefined,
-                          })
-                        }
-                        className={cn(
-                          !variation.available &&
-                            "opacity-50 cursor-not-allowed",
-                          selectedSizes.left === variation.size &&
-                            "bg-black text-white hover:bg-black hover:text-white"
-                        )}
-                      >
-                        {variation.size}
-                      </Button>
-                    )
-                  )}
-                </div>
-              </div>
-            </div>
-          )
         ) : (
-          <Empty className="border">
-            <EmptyHeader>
-              <EmptyTitle>Select Unit Type & Width</EmptyTitle>
-              <EmptyDescription>
-                In order to see all available sizes for given product, firstly
-                select Unit Type and Width of the product.
-              </EmptyDescription>
-            </EmptyHeader>
-          </Empty>
+          <div>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-center gap-3">
+              <p className="font-semibold text-lg sm:text-base">Width:</p>
+
+              <div className="flex justify-center sm:justify-end w-full sm:w-auto">
+                <ButtonGroup className="flex flex-wrap justify-center sm:justify-end">
+                  {pairUnitTypeSizes.availableWidths.map((width) => (
+                    <Button
+                      key={width}
+                      variant="outline"
+                      onClick={() => {
+                        setSelectedWidthPair(width);
+                        setProducts([]);
+                      }}
+                      className={cn(
+                        "text-[10px]",
+                        width === selectedWidthPair &&
+                          "bg-black text-white hover:bg-black hover:text-white"
+                      )}
+                    >
+                      {width}
+                    </Button>
+                  ))}
+                </ButtonGroup>
+              </div>
+            </div>
+
+            {selectedWidthPair ? (
+              <div className="flex flex-col justify-center items-start">
+                <div className="flex flex-col w-full">
+                  <p className="font-semibold text-lg sm:text-base my-4">
+                    All sizes
+                  </p>
+                  <div className="flex flex-wrap gap-2 justify-center">
+                    {pairUnitTypeSizes.variationsByWidth[selectedWidthPair].map(
+                      (variation) => (
+                        <Button
+                          key={variation.id}
+                          variant="outline"
+                          disabled={!variation.available}
+                          onClick={() => {
+                            productSelection(variation);
+                          }}
+                          className={cn(
+                            !variation.available &&
+                              "opacity-50 cursor-not-allowed",
+                            hasProduct(variation.id) &&
+                              "bg-black text-white hover:bg-black hover:text-white"
+                          )}
+                        >
+                          {variation.size}
+                        </Button>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <Empty className="border mt-4 !p-4">
+                <EmptyHeader>
+                  <EmptyTitle>Select Width</EmptyTitle>
+                  <EmptyDescription>
+                    In order to see all available sizes for given product,
+                    firstly select Width of the product.
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            )}
+          </div>
         )}
 
-        <div className="flex flex-col w-full">
-          {(selectedUnit === "UNPAIRED"
-            ? selectedSizes.left && selectedSizes.right
-            : selectedSizes.left) && <Button>Add to Cart</Button>}
-        </div>
+        {products.length > 0 && (
+          <div className="flex flex-col w-full">
+            <Button>Add to Cart</Button>
+          </div>
+        )}
       </motion.div>
     </motion.div>
   );

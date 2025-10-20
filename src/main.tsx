@@ -10,6 +10,7 @@ import { NotFound } from "@/pages/notfound/NotFound";
 import { Login } from "@/pages/login/Login";
 import { Products } from "@/pages/products/Products";
 import { Product } from "@/pages/products/Product";
+import { Checkout } from "@/pages/checkout/Checkout";
 
 import { Toaster } from "@/components/shared/sonner";
 
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
       { index: true, element: <Products /> },
       { path: "/:category", element: <Products /> },
       { path: "products/:id", element: <Product /> },
+      { path: "checkout", element: <Checkout /> },
     ],
   },
 ]);
