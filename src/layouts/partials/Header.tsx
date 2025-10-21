@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import { ShoppingCart, User, Menu, X, LogOut } from "lucide-react";
+import { User, Menu, X, LogOut } from "lucide-react";
 
-import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/images/Logo.png";
-import { Badge } from "@/components/shared/badge";
+import { CartDrawer } from "@/components/partials/CartDrawer";
 
 export const Header = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { isAuthenticated, logoutUser } = useAuth();
-  const { products } = useCart();
   const [isOpen, setIsOpen] = useState(false);
 
   const changeLanguage = (lng: string) => i18n.changeLanguage(lng);
@@ -69,29 +67,15 @@ export const Header = () => {
           }}
         />
 
+        <CartDrawer />
+
         {isAuthenticated && (
-          <>
-            <div className="relative">
-              <ShoppingCart
-                className="w-5 h-5 cursor-pointer"
-                onClick={() => {
-                  navigate("/checkout");
-                }}
-              />
-              <Badge
-                className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums absolute top-[-10px] right-[-10px]"
-                variant="destructive"
-              >
-                {products.length}
-              </Badge>
-            </div>
-            <LogOut
-              className="w-5 h-5 cursor-pointer"
-              onClick={() => {
-                logoutUser();
-              }}
-            />
-          </>
+          <LogOut
+            className="w-5 h-5 cursor-pointer"
+            onClick={() => {
+              logoutUser();
+            }}
+          />
         )}
       </div>
 
@@ -147,29 +131,15 @@ export const Header = () => {
               }}
             />
 
+            <CartDrawer />
+
             {isAuthenticated && (
-              <>
-                <div className="relative">
-                  <ShoppingCart
-                    className="w-5 h-5 cursor-pointer"
-                    onClick={() => {
-                      navigate("/checkout");
-                    }}
-                  />
-                  <Badge
-                    className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums absolute top-[-10px] right-[-10px]"
-                    variant="destructive"
-                  >
-                    {products.length}
-                  </Badge>
-                </div>
-                <LogOut
-                  className="w-5 h-5 cursor-pointer"
-                  onClick={() => {
-                    logoutUser();
-                  }}
-                />
-              </>
+              <LogOut
+                className="w-5 h-5 cursor-pointer"
+                onClick={() => {
+                  logoutUser();
+                }}
+              />
             )}
           </div>
         </div>
