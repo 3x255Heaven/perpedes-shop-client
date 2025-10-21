@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-import { useLoginUserMutation } from "@/hooks/useUser";
 import { useAuth } from "@/context/AuthContext";
 
 import LoginImage from "@/assets/images/login.jpeg";
@@ -12,30 +11,24 @@ import { Input } from "@/components/shared/input";
 import { Label } from "@/components/shared/label";
 
 export const Login = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { loginUser } = useAuth();
+  const { loginUser, isLoading } = useAuth();
   const navigate = useNavigate();
 
-  const { mutate: login, isPending } = useLoginUserMutation();
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(
-      { username, password },
-      {
-        onSuccess: (data) => {
-          loginUser(data.accessToken);
-          navigate("/");
-        },
-        onError: (error) => {
-          console.log(error);
-          //@ts-ignore
-          toast(error.response.data.message);
-        },
+
+    try {
+      await loginUser(email, password);
+      toast.success("Logged in successfully!");
+      navigate("/");
+    } catch (error: any) {
+      if (error.message) {
+        toast.error(error.message);
       }
-    );
+    }
   };
 
   return (
@@ -53,14 +46,14 @@ export const Login = () => {
                     </p>
                   </div>
                   <div className="grid gap-3">
-                    <Label htmlFor="username">Username</Label>
+                    <Label htmlFor="email">Email</Label>
                     <Input
-                      id="username"
+                      id="email"
                       type="text"
-                      placeholder="Username"
+                      placeholder="Email"
                       required
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="grid gap-3">
@@ -68,6 +61,7 @@ export const Login = () => {
                     <Input
                       id="password"
                       type="password"
+                      placeholder="Password"
                       required
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -76,9 +70,9 @@ export const Login = () => {
                   <Button
                     type="submit"
                     className="w-full cursor-pointer"
-                    disabled={isPending}
+                    disabled={isLoading}
                   >
-                    {isPending ? "Logging in..." : "Login"}
+                    {isLoading ? "Logging in..." : "Login"}
                   </Button>
                 </div>
               </form>

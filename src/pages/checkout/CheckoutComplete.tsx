@@ -9,14 +9,22 @@ import {
   CardTitle,
 } from "@/components/shared/card";
 import { Separator } from "@/components/shared/separator";
+import { useNavigate } from "react-router";
+import { useAuth } from "@/context/AuthContext";
+import { useCart } from "@/context/CartContext";
+import type { PaymentMethodItem, ShippingMethodItem } from "./Checkout";
 
-const subtotal = 291.09;
-const items = [
-  { id: 1, name: "Siena Light", code: "O2", size: "Größe 40", price: 145.59 },
-  { id: 2, name: "Siena Light", code: "O5", size: "Größe 40", price: 145.5 },
-];
+export const CheckoutComplete = ({
+  shippingMethod,
+  paymentMethod,
+}: {
+  shippingMethod: ShippingMethodItem;
+  paymentMethod: PaymentMethodItem;
+}) => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { total, products } = useCart();
 
-export const CheckoutComplete = () => {
   return (
     <div className="text-center bg-white p-4 rounded-2xl">
       <motion.div
@@ -40,56 +48,81 @@ export const CheckoutComplete = () => {
           <CardTitle>Order Summary</CardTitle>
         </CardHeader>
         <CardContent className="p-4 text-left space-y-4">
-          <div>
+          <div className="flex flex-col justify-center gap-1">
             <h4 className="font-semibold mb-1">Shipping Address</h4>
-            <p>
-              Perpedes GmbH
-              <br />
-              Tannenbergstr. 139
-              <br />
-              73230 Kirchheim Teck
-              <br />
-              Deutschland
-            </p>
+            <div className="flex flex-col text-sm gap-1 text-gray-600">
+              <p>{user?.name}</p>
+              <p>{user?.street}</p>
+              <p>
+                {user?.zip} {user?.city}
+              </p>
+              <p>{user?.id}</p>
+            </div>
           </div>
 
-          <div>
+          <div className="flex flex-col justify-center gap-1">
             <h4 className="font-semibold mb-1">Shipping Method</h4>
-            <p>Standard Shipping (3-5 business days)</p>
+            <div className="flex flex-col text-sm gap-1 text-gray-600">
+              <p>
+                {shippingMethod.name}: {shippingMethod.value}
+              </p>
+            </div>
           </div>
 
-          <div>
+          <div className="flex flex-col justify-center gap-1">
             <h4 className="font-semibold mb-1">Payment Method</h4>
-            <p>Invoice (Payment within 14 days)</p>
+            <div className="flex flex-col text-sm gap-1 text-gray-600">
+              <p>
+                {paymentMethod.name}: {paymentMethod.value}
+              </p>
+            </div>
           </div>
 
           <div>
             <h4 className="font-semibold mb-2">Ordered Items</h4>
-            {items.map((item) => (
-              <div key={item.id} className="flex justify-between text-sm">
-                <p>
-                  {item.name}, {item.code}, {item.size}
-                </p>
-                <p>€{item.price.toFixed(2)}</p>
+            {products.map((product) => (
+              <div className="flex items-center w-full gap-2">
+                <img
+                  src={product.images[0]?.imageUrl}
+                  alt={product.name}
+                  className="w-24 h-24 object-contain"
+                />
+
+                <div
+                  key={product.id}
+                  className="flex w-full justify-between text-sm"
+                >
+                  <div className="flex flex-col gap-1">
+                    <p>{product.name}</p>
+                    <p className="text-gray-600">
+                      Width: {product.width} Size: {product.size}
+                    </p>
+                  </div>
+                  <p className="self-center font-bold">
+                    {product.price?.formattedPrice}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
 
           <Separator />
 
-          <div className="flex justify-between">
-            <p>Subtotal</p>
-            <p>€{subtotal.toFixed(2)}</p>
-          </div>
+          <div className="flex flex-col w-full gap-2 justify-center items-center">
+            <div className="flex justify-between w-full text-sm">
+              <p>Subtotal</p>
+              <p>€{total}</p>
+            </div>
 
-          <div className="flex justify-between">
-            <p>Shipping</p>
-            <p>Free</p>
-          </div>
+            <div className="flex justify-between w-full text-sm">
+              <p>Shipping</p>
+              <p>Free</p>
+            </div>
 
-          <div className="flex justify-between font-medium">
-            <p>Total</p>
-            <p>€{subtotal.toFixed(2)}</p>
+            <div className="flex justify-between w-full text-2xl font-medium">
+              <p>Total</p>
+              <p>€{total}</p>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -98,7 +131,13 @@ export const CheckoutComplete = () => {
         We've sent you a confirmation email with your order details.
       </p>
 
-      <Button>Back to Shop</Button>
+      <Button
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        Back to Shop
+      </Button>
     </div>
   );
 };

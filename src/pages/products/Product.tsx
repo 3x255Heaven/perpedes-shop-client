@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/context/CartContext";
 
 import { Loader2, RefreshCcw } from "lucide-react";
 import { Button } from "@/components/shared/button";
@@ -27,7 +29,8 @@ const SELECTION_UNITS = ["PAIR", "UNPAIRED"] as const;
 export const Product = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [products, setProducts] = useState<ProductVariation[]>([]);
+  const { addItem } = useCart();
+  const [variations, setVariations] = useState<ProductVariation[]>([]);
   const [selectedImage, setSelectedImage] = useState<number>(0);
   const [selectedUnit, setSelectedUnit] = useState<string>(SELECTION_UNITS[0]);
   const [selectedWidthPair, setSelectedWidthPair] = useState<string | null>(
@@ -58,19 +61,19 @@ export const Product = () => {
     data: leftUnitTypeSizes,
     isLoading: isLeftUnitTypeSizesLoading,
     isError: isLeftUnitTypeSizesError,
-  } = useProductSizesQuery(id, "LEFT");
+  } = useProductSizesQuery(id, "LEFT", true);
 
   const {
     data: rightUnitTypeSizes,
     isLoading: isRightUnitTypeSizesLoading,
     isError: isRightUnitTypeSizesError,
-  } = useProductSizesQuery(id, "RIGHT");
+  } = useProductSizesQuery(id, "RIGHT", true);
 
   const {
     data: pairUnitTypeSizes,
     isLoading: isPairUnitTypeSizesLoading,
     isError: isPairUnitTypeSizesError,
-  } = useProductSizesQuery(id, "PAIR");
+  } = useProductSizesQuery(id, "PAIR", true);
 
   const features = useMemo(() => {
     if (!product) return [];
@@ -86,33 +89,48 @@ export const Product = () => {
     ];
   }, [product]);
 
-  const addProduct = (newProduct: ProductVariation) => {
-    setProducts((prevProducts) => {
-      const filtered = prevProducts.filter(
-        (product) => product.unit !== newProduct.unit
+  const addVariation = (newVariation: ProductVariation) => {
+    setVariations((prevVariations) => {
+      const filtered = prevVariations.filter(
+        (variation) => variation.unit !== newVariation.unit
       );
-      const exists = filtered.some((product) => product.id === newProduct.id);
+      const exists = filtered.some(
+        (variation) => variation.id === newVariation.id
+      );
 
       if (exists) return filtered;
-      return [...filtered, newProduct];
+      return [...filtered, newVariation];
     });
   };
 
-  const removeProduct = (productId: number) => {
-    setProducts((prevProducts) =>
-      prevProducts.filter((product) => product.id !== productId)
+  const removeVariation = (variationId: number) => {
+    setVariations((prevVariations) =>
+      prevVariations.filter((variation) => variation.id !== variationId)
     );
   };
 
-  const hasProduct = (productId: number) => {
-    return products.some((product) => product.id === productId);
+  const hasVariation = (variationId: number) => {
+    return variations.some((variation) => variation.id === variationId);
   };
 
-  const productSelection = (product: ProductVariation) => {
-    if (hasProduct(product.id)) {
-      removeProduct(product.id);
+  const variationSelection = (variation: ProductVariation) => {
+    if (hasVariation(variation.id)) {
+      removeVariation(variation.id);
     } else {
-      addProduct(product);
+      addVariation(variation);
+    }
+  };
+
+  const addToCart = () => {
+    if (product) {
+      for (const variation of variations) {
+        addItem({ ...product, ...variation });
+      }
+
+      toast.success("Products are added to the cart!");
+      setVariations([]);
+    } else {
+      toast.error("Something went wrong, please try again!");
     }
   };
 
@@ -289,7 +307,7 @@ export const Product = () => {
                   onClick={() => {
                     setSelectedUnit(unit);
                     setSelectedWidthPair(null);
-                    setProducts([]);
+                    setVariations([]);
                   }}
                   variant="outline"
                   className={cn(
@@ -320,7 +338,7 @@ export const Product = () => {
                         variant="outline"
                         onClick={() => {
                           setSelectedWidthLeft(width);
-                          setProducts([]);
+                          setVariations([]);
                         }}
                         className={cn(
                           "text-[10px]",
@@ -350,12 +368,12 @@ export const Product = () => {
                           variant="outline"
                           disabled={!variation.available}
                           onClick={() => {
-                            productSelection(variation);
+                            variationSelection(variation);
                           }}
                           className={cn(
                             !variation.available &&
                               "opacity-50 cursor-not-allowed",
-                            hasProduct(variation.id) &&
+                            hasVariation(variation.id) &&
                               "bg-black text-white hover:bg-black hover:text-white"
                           )}
                         >
@@ -392,7 +410,7 @@ export const Product = () => {
                         variant="outline"
                         onClick={() => {
                           setSelectedWidthRight(width);
-                          setProducts([]);
+                          setVariations([]);
                         }}
                         className={cn(
                           "text-[10px]",
@@ -422,12 +440,12 @@ export const Product = () => {
                           variant="outline"
                           disabled={!variation.available}
                           onClick={() => {
-                            productSelection(variation);
+                            variationSelection(variation);
                           }}
                           className={cn(
                             !variation.available &&
                               "opacity-50 cursor-not-allowed",
-                            hasProduct(variation.id) &&
+                            hasVariation(variation.id) &&
                               "bg-black text-white hover:bg-black hover:text-white"
                           )}
                         >
@@ -463,7 +481,7 @@ export const Product = () => {
                       variant="outline"
                       onClick={() => {
                         setSelectedWidthPair(width);
-                        setProducts([]);
+                        setVariations([]);
                       }}
                       className={cn(
                         "text-[10px]",
@@ -492,12 +510,12 @@ export const Product = () => {
                           variant="outline"
                           disabled={!variation.available}
                           onClick={() => {
-                            productSelection(variation);
+                            variationSelection(variation);
                           }}
                           className={cn(
                             !variation.available &&
                               "opacity-50 cursor-not-allowed",
-                            hasProduct(variation.id) &&
+                            hasVariation(variation.id) &&
                               "bg-black text-white hover:bg-black hover:text-white"
                           )}
                         >
@@ -522,9 +540,9 @@ export const Product = () => {
           </div>
         )}
 
-        {products.length > 0 && (
+        {variations.length > 0 && (
           <div className="flex flex-col w-full">
-            <Button>Add to Cart</Button>
+            <Button onClick={addToCart}>Add to Cart</Button>
           </div>
         )}
       </motion.div>

@@ -9,12 +9,19 @@ type Image = {
   createdAt: string;
 };
 
+type Price = {
+  amount: string;
+  currency: string;
+  formattedPrice: string;
+};
+
 type Unit = {
   code: string;
   displayName: string;
   description: string;
   sortOrder: number;
 };
+
 export type ProductVariation = {
   id: number;
   articleNumber: string;
@@ -24,7 +31,7 @@ export type ProductVariation = {
   available: boolean;
   totalStock: number;
   variationFunction: string;
-  price: number | null;
+  price: Price | null;
 };
 
 type VariationsByWidth = Record<string, ProductVariation[]>;
@@ -46,6 +53,7 @@ export type Product = {
   soleColors: string[];
 };
 
+export type CartProductItem = Product & ProductVariation;
 export type ProductPreview = Pick<Product, "name" | "productId" | "images">;
 
 type ProductUnitsResponse = {
@@ -90,15 +98,19 @@ export function useProductShoeSelectionQuery(productId: string | undefined) {
 
 export function useProductSizesQuery(
   productId: string | undefined,
-  unit: string | undefined
+  unit: string | undefined,
+  includePrice: boolean
 ) {
   return useQuery<ProductSizesResponse>({
-    queryKey: ["catalog", "products", productId, "sizes", unit],
+    queryKey: ["catalog", "products", productId, "sizes", unit, includePrice],
     queryFn: async () => {
       const response = await axiosInstance.get(
         `/catalog/products/${productId}/sizes`,
         {
-          params: unit ? { unit } : undefined,
+          params: {
+            ...(unit ? { unit } : {}),
+            ...(includePrice ? { includePrice } : {}),
+          },
         }
       );
       return response.data;

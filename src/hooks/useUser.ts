@@ -1,6 +1,17 @@
 import { axiosInstance } from "@/lib/axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
+export type User = {
+  id: number;
+  name: string;
+  street: string;
+  zip: number;
+  city: string;
+  contactPerson: string;
+  email: string;
+  password: string;
+};
+
 type LoginPayload = {
   username: string;
   password: string;
