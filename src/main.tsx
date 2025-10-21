@@ -12,9 +12,11 @@ import { Login } from "@/pages/login/Login";
 import { Products } from "@/pages/products/Products";
 import { Product } from "@/pages/products/Product";
 import { Checkout } from "@/pages/checkout/Checkout";
+import { Profile } from "@/pages/profile/Profile";
 
 import { Toaster } from "@/components/shared/sonner";
 import { ProtectedRoute } from "@/components/routes/ProtectedRoute";
+import { PublicRoute } from "@/components/routes/PublicRoute";
 
 import "./i18n";
 import "./index.css";
@@ -24,7 +26,11 @@ const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <PublicRoute>
+        <Login />
+      </PublicRoute>
+    ),
   },
   {
     path: "/",
@@ -39,6 +45,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Checkout />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <Profile />
           </ProtectedRoute>
         ),
       },

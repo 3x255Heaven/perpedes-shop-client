@@ -56,6 +56,8 @@ export const Header = () => {
           {i18n.language === "en" ? "EN" : "DE"}
         </button>
 
+        <CartDrawer />
+
         <User
           className="w-5 h-5 cursor-pointer"
           onClick={() => {
@@ -66,8 +68,6 @@ export const Header = () => {
             }
           }}
         />
-
-        <CartDrawer />
 
         {isAuthenticated && (
           <LogOut

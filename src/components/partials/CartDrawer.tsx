@@ -1,4 +1,4 @@
-import { useState } from "react";
+import * as React from "react";
 import {
   Drawer,
   DrawerClose,
@@ -25,8 +25,7 @@ import { useNavigate } from "react-router";
 
 export function CartDrawer() {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
-
+  const [open, setOpen] = React.useState(false);
   const { products, total, removeItem } = useCart();
 
   return (
@@ -43,7 +42,7 @@ export function CartDrawer() {
         </Button>
       </DrawerTrigger>
 
-      <DrawerContent className="!mt-0 !rounded-none max-w-md ml-auto mr-0 rounded-t-2xl sm:h-screen sm:w-[400px] sm:fixed sm:right-0 sm:top-0 sm:bottom-0">
+      <DrawerContent className="fixed bottom-0 left-0 right-0 z-50 mt-0 rounded-t-2xl border-t bg-background sm:inset-y-0 sm:right-0 sm:left-auto sm:h-full sm:w-[400px] sm:rounded-none sm:border-l sm:animate-in sm:slide-in-from-right">
         <DrawerHeader className="flex flex-row items-center justify-between border-b">
           <DrawerTitle className="text-lg font-semibold">Cart</DrawerTitle>
           <DrawerClose asChild>
@@ -63,21 +62,19 @@ export function CartDrawer() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="absolute top-0 right-0"
-                  onClick={() => {
-                    removeItem(product.id);
-                  }}
+                  className="absolute top-1 right-1"
+                  onClick={() => removeItem(product.id)}
                 >
-                  <X className="h-5 w-5" />
+                  <X className="h-4 w-4" />
                 </Button>
-                <CardContent className="flex justify-between items-center py-3">
+                <CardContent className="flex gap-3 items-center py-3">
                   <img
                     src={product.images[0]?.imageUrl}
                     alt={product.name}
-                    className="w-44 h-44 object-contain"
+                    className="w-20 h-20 object-contain sm:w-32 sm:h-32"
                   />
-                  <div>
-                    <h4 className="font-medium">{product.name}</h4>
+                  <div className="flex-1 text-center">
+                    <h4 className="font-medium line-clamp-1">{product.name}</h4>
                     <p className="text-sm text-muted-foreground">
                       Quantity: {product.quantity}
                     </p>
