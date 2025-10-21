@@ -19,7 +19,6 @@ export const Summary = ({
           <span>Total Amount</span>
           <span>€{total.toFixed(2)}</span>
         </div>
-        <p className="text-xs text-gray-500 mt-1">incl. VAT</p>
         {children}
       </CardContent>
     </Card>
