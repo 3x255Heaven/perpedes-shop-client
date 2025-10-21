@@ -20,6 +20,10 @@ export const PersonalInformation = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
               <div>
+                <p className="text-gray-500">Customer Number</p>
+                <p className="font-medium">{user?.id}</p>
+              </div>
+              <div>
                 <p className="text-gray-500">Name</p>
                 <p className="font-medium">{user?.name}</p>
               </div>
