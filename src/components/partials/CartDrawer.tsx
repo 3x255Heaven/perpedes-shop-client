@@ -22,11 +22,13 @@ import {
   EmptyTitle,
 } from "../shared/empty";
 import { useNavigate } from "react-router";
+import { useAuth } from "@/context/AuthContext";
 
 export function CartDrawer() {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const { products, total, removeItem } = useCart();
+  const { isAuthenticated } = useAuth();
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
@@ -78,9 +80,11 @@ export function CartDrawer() {
                     <p className="text-sm text-muted-foreground">
                       Quantity: {product.quantity}
                     </p>
-                    <p className="font-semibold">
-                      {product.price?.formattedPrice}
-                    </p>
+                    {isAuthenticated && (
+                      <p className="font-semibold">
+                        {product.price?.formattedPrice}
+                      </p>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -103,7 +107,7 @@ export function CartDrawer() {
         <Separator />
 
         <DrawerFooter className="border-t mt-auto">
-          {products.length > 0 && (
+          {products.length > 0 && isAuthenticated && (
             <>
               <div className="flex justify-between items-center">
                 <p className="text-lg font-medium">Total</p>

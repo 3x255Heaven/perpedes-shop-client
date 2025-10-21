@@ -7,11 +7,13 @@ import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/images/Logo.png";
 import { CartDrawer } from "@/components/partials/CartDrawer";
+import { useCart } from "@/context/CartContext";
 
 export const Header = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { isAuthenticated, logoutUser } = useAuth();
+  const { clearCart } = useCart();
   const [isOpen, setIsOpen] = useState(false);
 
   const changeLanguage = (lng: string) => i18n.changeLanguage(lng);
@@ -73,6 +75,7 @@ export const Header = () => {
           <LogOut
             className="w-5 h-5 cursor-pointer"
             onClick={() => {
+              clearCart();
               logoutUser();
             }}
           />
@@ -137,6 +140,7 @@ export const Header = () => {
               <LogOut
                 className="w-5 h-5 cursor-pointer"
                 onClick={() => {
+                  clearCart();
                   logoutUser();
                 }}
               />
