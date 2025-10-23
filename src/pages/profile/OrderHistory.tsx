@@ -11,12 +11,15 @@ import {
   EmptyTitle,
 } from "@/components/shared/empty";
 import { ShoppingBag } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface OrderHistoryProps {
   onSelectOrder: (orderNumber: string) => void;
 }
 
 export const OrderHistory = ({ onSelectOrder }: OrderHistoryProps) => {
+  const { t } = useTranslation();
+
   const ordersQuery = useOrdersQuery();
 
   if (ordersQuery.isPending) {
@@ -30,10 +33,10 @@ export const OrderHistory = ({ onSelectOrder }: OrderHistoryProps) => {
   if (ordersQuery.isError || ordersQuery.data === undefined) {
     return (
       <div className="h-[40vh] p-16 flex flex-col justify-center items-center text-center">
-        <p className="text-lg font-medium mb-4">
-          Something went wrong while gathering orders.
-        </p>
-        <Button onClick={() => window.location.reload()}>Try Again</Button>
+        <p className="text-lg font-medium mb-4">{t("something_went_wrong")}</p>
+        <Button onClick={() => window.location.reload()}>
+          {t("try_again")}
+        </Button>
       </div>
     );
   }
@@ -45,10 +48,8 @@ export const OrderHistory = ({ onSelectOrder }: OrderHistoryProps) => {
           <EmptyMedia variant="icon">
             <ShoppingBag />
           </EmptyMedia>
-          <EmptyTitle>You haven’t placed any orders yet.</EmptyTitle>
-          <EmptyDescription>
-            We are sure you can find something for yourself!
-          </EmptyDescription>
+          <EmptyTitle>{t("empty_order")}</EmptyTitle>
+          <EmptyDescription>{t("empty_cart_subtitle")}</EmptyDescription>
         </EmptyHeader>
       </Empty>
     );
@@ -66,12 +67,12 @@ export const OrderHistory = ({ onSelectOrder }: OrderHistoryProps) => {
             <div className="flex flex-col gap-1">
               <h3 className="font-semibold text-lg">{order.orderNumber}</h3>
               <p className="text-sm text-gray-500">
-                {order.items.length} items • {order.createdAt}
+                {order.items.length} {t("items")} • {order.createdAt}
               </p>
             </div>
 
             <div className="flex items-center gap-4">
-              <Badge>Placed</Badge>
+              <Badge>{t("placed")}</Badge>
               <p className="font-semibold text-xl">{order.totals.total}</p>
             </div>
           </CardContent>

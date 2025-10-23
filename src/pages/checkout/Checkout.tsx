@@ -6,6 +6,7 @@ import { CheckoutCart } from "./CheckoutCart";
 import { CheckoutShipping } from "./CheckoutShipping";
 import { CheckoutPayment } from "./CheckoutPayment";
 import { CheckoutComplete } from "./CheckoutComplete";
+import { useTranslation } from "react-i18next";
 
 export type ShippingMethod = "standard" | "express";
 export type ShippingMethodItem = {
@@ -21,19 +22,24 @@ export type PaymentMethodItem = {
   value: string;
 };
 
-const checkoutSteps = [
-  {
-    checkoutStepOrderNo: 1,
-    label: "Shopping cart",
-    icon: <ShoppingCart size={16} />,
-  },
-  { checkoutStepOrderNo: 2, label: "Shipping", icon: <Truck size={16} /> },
-  { checkoutStepOrderNo: 3, label: "Payment", icon: <CreditCard size={16} /> },
-  { checkoutStepOrderNo: 4, label: "Complete", icon: <Check size={16} /> },
-];
-
 export const Checkout = () => {
+  const { t } = useTranslation();
   const [checkoutStep, setCheckoutStep] = useState<1 | 2 | 3 | 4>(1);
+
+  const checkoutSteps = [
+    {
+      checkoutStepOrderNo: 1,
+      label: t("shopping_cart"),
+      icon: <ShoppingCart size={16} />,
+    },
+    { checkoutStepOrderNo: 2, label: t("shipping"), icon: <Truck size={16} /> },
+    {
+      checkoutStepOrderNo: 3,
+      label: t("payment"),
+      icon: <CreditCard size={16} />,
+    },
+    { checkoutStepOrderNo: 4, label: t("complete"), icon: <Check size={16} /> },
+  ];
 
   const [selectedShippingMethod, setSelectedShippingMethod] =
     useState<ShippingMethodItem>({
@@ -53,7 +59,7 @@ export const Checkout = () => {
     <div className="min-h-screen bg-muted/20 flex flex-col justify-center items-center px-4 py-8 sm:px-6 md:px-8">
       <div className="w-full max-w-4xl bg-muted/50 p-6 sm:p-8 rounded-2xl shadow-sm">
         <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center md:text-left">
-          Checkout
+          {t("checkout")}
         </h2>
 
         <div

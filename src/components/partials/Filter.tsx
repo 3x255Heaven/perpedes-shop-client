@@ -4,6 +4,7 @@ import { ColorPicker } from "@/components/partials/ColorPicker";
 import { Checkbox } from "@/components/shared/checkbox";
 import { Label } from "@/components/shared/label";
 import type { Filters } from "@/hooks/useFilters";
+import { useTranslation } from "react-i18next";
 
 export const Filter = React.memo(
   ({
@@ -13,6 +14,8 @@ export const Filter = React.memo(
     filtersData: Filters;
     isShoeTypeFilterAvailable: boolean;
   }) => {
+    const { t } = useTranslation();
+
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [selected, setSelected] = useState({
@@ -75,7 +78,7 @@ export const Filter = React.memo(
     return (
       <>
         <div className="mb-6 mr-6 border-b pb-4">
-          <h3 className="font-medium text-sm mb-2">Function</h3>
+          <h3 className="font-medium text-sm mb-2">{t("function")}</h3>
           {filtersData.variationFunctions.map((variationFunction) => (
             <div
               key={variationFunction.code}
@@ -106,7 +109,7 @@ export const Filter = React.memo(
 
         {isShoeTypeFilterAvailable && (
           <div className="mb-6 mr-6 border-b pb-4">
-            <h3 className="font-medium text-sm mb-2">Shoe Type</h3>
+            <h3 className="font-medium text-sm mb-2">{t("shoe_type")}</h3>
             {filtersData.shoeTypes.map((shoeType) => (
               <div
                 key={shoeType.id}
@@ -135,7 +138,7 @@ export const Filter = React.memo(
         )}
 
         <div className="mb-6 mr-6 border-b pb-4">
-          <h3 className="font-medium text-sm mb-2">Closure System</h3>
+          <h3 className="font-medium text-sm mb-2">{t("closure_system")}</h3>
           {filtersData.closureSystems.map((closureSystem) => (
             <div
               key={closureSystem.id}
@@ -165,7 +168,7 @@ export const Filter = React.memo(
         </div>
 
         <div className="mb-6 mr-6 border-b pb-4">
-          <h3 className="font-medium text-sm mb-2">Inner Lining</h3>
+          <h3 className="font-medium text-sm mb-2">{t("inner_lining")}</h3>
           {filtersData.innerLinings.map((innerLining) => (
             <div
               key={innerLining.id}
@@ -195,7 +198,7 @@ export const Filter = React.memo(
         </div>
 
         <div className="mb-6 mr-6 border-b pb-4">
-          <h3 className="font-medium text-sm mb-2">Sole Type</h3>
+          <h3 className="font-medium text-sm mb-2">{t("sole_type")}</h3>
           {filtersData.soleTypes.map((soleType) => (
             <div key={soleType.id} className="flex items-center space-x-2 mb-2">
               <Checkbox
@@ -220,7 +223,7 @@ export const Filter = React.memo(
         </div>
 
         <div className="mb-6 mr-6 border-b pb-4">
-          <h3 className="font-medium text-sm mb-2">Colors</h3>
+          <h3 className="font-medium text-sm mb-2">{t("colors")}</h3>
           <ColorPicker
             colors={filtersData.colors}
             selectedColors={selected.colors}

@@ -11,8 +11,10 @@ import { Button } from "@/components/shared/button";
 import { Filter } from "@/components/partials/Filter";
 import { ProductCard } from "@/components/partials/ProductCard";
 import { Spinner } from "@/components/shared/spinner";
+import { useTranslation } from "react-i18next";
 
 export const Products = () => {
+  const { t } = useTranslation();
   const { category } = useParams<{ category: string }>();
   const [showFilters, setShowFilters] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -51,8 +53,8 @@ export const Products = () => {
   const pageTitle = category
     ? filtersData
       ? filtersData.shoeTypes.find((type) => type.id === Number(category))?.name
-      : "All Shoes"
-    : "All Shoes";
+      : t("all_shoes")
+    : t("all_shoes");
 
   const isLoading = isProductsLoading || isFiltersLoading;
   const isError = isProductsError || isFiltersError;
@@ -77,10 +79,10 @@ export const Products = () => {
   if (isError || !productsData || !filtersData) {
     return (
       <div className="h-[80vh] p-16 flex flex-col justify-center items-center text-center">
-        <p className="text-lg font-medium mb-4">
-          Something went wrong while loading products or filters.
-        </p>
-        <Button onClick={() => window.location.reload()}>Try Again</Button>
+        <p className="text-lg font-medium mb-4">{t("something_went_wrong")}</p>
+        <Button onClick={() => window.location.reload()}>
+          {t("try_again")}
+        </Button>
       </div>
     );
   }
@@ -126,7 +128,7 @@ export const Products = () => {
                     onClick={() => setSearchParams({})}
                     className="text-sm"
                   >
-                    Clear All
+                    {t("clear_all")}
                   </Button>
                 )}
               </div>
@@ -140,7 +142,7 @@ export const Products = () => {
 
         {products.length === 0 ? (
           <div className="h-[80vh] w-full p-16 flex flex-col justify-center items-center text-center">
-            <p className="text-lg font-medium ">No products found.</p>
+            <p className="text-lg font-medium ">{t("no_products_found")}</p>
           </div>
         ) : (
           <main

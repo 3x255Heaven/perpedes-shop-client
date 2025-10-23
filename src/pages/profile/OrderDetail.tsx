@@ -6,6 +6,7 @@ import { Spinner } from "@/components/shared/spinner";
 import { motion } from "framer-motion";
 import { Separator } from "@/components/shared/separator";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 interface OrderDetailProps {
   orderNumber: string;
@@ -13,6 +14,8 @@ interface OrderDetailProps {
 }
 
 export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
+  const { t } = useTranslation();
+
   const { user } = useAuth();
   const orderQuery = useOrderQuery(orderNumber);
 
@@ -27,10 +30,10 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
   if (orderQuery.isError || orderQuery.data === undefined) {
     return (
       <div className="h-[40vh] p-16 flex flex-col justify-center items-center text-center">
-        <p className="text-lg font-medium mb-4">
-          Something went wrong while getting order.
-        </p>
-        <Button onClick={() => window.location.reload()}>Try Again</Button>
+        <p className="text-lg font-medium mb-4">{t("something_went_wrong")}</p>
+        <Button onClick={() => window.location.reload()}>
+          {t("try_again")}
+        </Button>
       </div>
     );
   }
@@ -44,7 +47,7 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
         className="flex items-center gap-2"
         onClick={onBack}
       >
-        <ChevronLeft /> Back to Order History
+        <ChevronLeft /> {t("back_to_order_history")}
       </Button>
 
       <motion.div
@@ -58,16 +61,18 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
         </div>
       </motion.div>
 
-      <h3 className="text-xl font-semibold text-center mb-1">Order Details</h3>
+      <h3 className="text-xl font-semibold text-center mb-1">
+        {t("order_details")}
+      </h3>
       <p className="text-gray-600 text-center mb-6">
-        Your order number:{" "}
+        {t("your_order_number")}:{" "}
         <span className="font-medium">{order.orderNumber}</span>
       </p>
 
       <Card className="bg-muted/50">
         <CardContent className="p-6 flex flex-col gap-6">
           <div>
-            <h4 className="font-semibold mb-2">Shipping Address</h4>
+            <h4 className="font-semibold mb-2">{t("shipping_address")}</h4>
             <div className="flex flex-col text-sm gap-1 text-gray-600">
               <p>{order.shippingAddress.companyName}</p>
               <p>{order.shippingAddress.street}</p>
@@ -80,21 +85,21 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
           </div>
 
           <div>
-            <h4 className="font-semibold mb-2">Shipping Method</h4>
+            <h4 className="font-semibold mb-2">{t("shipping_method")}</h4>
             <p className="text-sm text-gray-600">
               {order.shippingMethod.name}: {order.shippingMethod.description}
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-2">Payment Method</h4>
+            <h4 className="font-semibold mb-2">{t("payment_method")}</h4>
             <p className="text-sm text-gray-600">
               {order.paymentMethod.type}: {order.paymentMethod.description}
             </p>
           </div>
 
           <div>
-            <h4 className="font-semibold mb-2">Ordered Items</h4>
+            <h4 className="font-semibold mb-2">{t("ordered_items")}</h4>
             <div className="flex flex-col gap-3">
               {order.items.map((item) => (
                 <Card key={item.variationId} className="bg-white">
@@ -108,10 +113,10 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
                       <div className="flex flex-col gap-1 mt-2 sm:mt-0">
                         <p className="font-medium">{item.productName}</p>
                         <p className="text-gray-600 text-sm">
-                          Width: {item.width} • Size: {item.size}
+                          {t("width")}: {item.width} • {t("size")}: {item.size}
                         </p>
                         <p className="text-gray-600 text-sm">
-                          Article: {item.articleNumber}
+                          {t("items")}: {item.articleNumber}
                         </p>
                       </div>
                     </div>
@@ -128,15 +133,15 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
 
           <div className="flex flex-col w-full gap-2 justify-center items-center">
             <div className="flex justify-between w-full text-sm">
-              <p>Subtotal</p>
+              <p>{t("subtotal")}</p>
               <p>€{order.totals.subtotal}</p>
             </div>
             <div className="flex justify-between w-full text-sm">
-              <p>Shipping</p>
+              <p>{t("shipping")}</p>
               <p>{order.totals.shippingCost}</p>
             </div>
             <div className="flex justify-between w-full text-2xl font-medium">
-              <p>Total</p>
+              <p>{t("total_amount")}</p>
               <p>€{order.totals.total}</p>
             </div>
           </div>

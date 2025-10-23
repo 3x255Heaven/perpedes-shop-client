@@ -4,8 +4,10 @@ import { Button } from "@/components/shared/button";
 import { Card, CardContent } from "@/components/shared/card";
 import { useCart } from "@/context/CartContext";
 import { ChevronRight, Trash2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const CheckoutCart = ({ onNext }: { onNext: () => void }) => {
+  const { t } = useTranslation();
   const { products, total, removeItem, increaseQuantity, decreaseQuantity } =
     useCart();
 
@@ -78,7 +80,7 @@ export const CheckoutCart = ({ onNext }: { onNext: () => void }) => {
 
       <Summary total={total}>
         <Button className="w-full mt-4" onClick={onNext}>
-          Proceed to Checkout <ChevronRight />
+          {t("proceed_to_checkout")} <ChevronRight />
         </Button>
       </Summary>
     </div>

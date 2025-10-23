@@ -17,6 +17,7 @@ import { Separator } from "@/components/shared/separator";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import type { PaymentMethodItem, ShippingMethodItem } from "./Checkout";
+import { useTranslation } from "react-i18next";
 
 export const CheckoutComplete = ({
   shippingMethod,
@@ -25,6 +26,8 @@ export const CheckoutComplete = ({
   shippingMethod: ShippingMethodItem;
   paymentMethod: PaymentMethodItem;
 }) => {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const { user } = useAuth();
   const { products, clearCart } = useCart();
@@ -80,10 +83,10 @@ export const CheckoutComplete = ({
   if (placeOrderMutation.isError || placeOrderMutation.data === undefined) {
     return (
       <div className="h-[40vh] p-16 flex flex-col justify-center items-center text-center">
-        <p className="text-lg font-medium mb-4">
-          Something went wrong while placing order.
-        </p>
-        <Button onClick={() => window.location.reload()}>Try Again</Button>
+        <p className="text-lg font-medium mb-4">{t("something_went_wrong")}</p>
+        <Button onClick={() => window.location.reload()}>
+          {t("try_again")}
+        </Button>
       </div>
     );
   }
@@ -101,9 +104,9 @@ export const CheckoutComplete = ({
         </div>
       </motion.div>
 
-      <h3 className="text-xl font-semibold mb-1">Thank you for your order!</h3>
+      <h3 className="text-xl font-semibold mb-1">{t("thank_you_order")}</h3>
       <p className="text-gray-600 mb-6">
-        Your order number:{" "}
+        {t("your_order_number")}{" "}
         <span className="font-medium">
           {placeOrderMutation.data.orderNumber}
         </span>
@@ -111,11 +114,11 @@ export const CheckoutComplete = ({
 
       <Card className="max-w-lg mx-auto mb-6 bg-muted/50">
         <CardHeader>
-          <CardTitle>Order Summary</CardTitle>
+          <CardTitle>{t("order_summary")}</CardTitle>
         </CardHeader>
         <CardContent className="p-4 text-left space-y-4">
           <div className="flex flex-col justify-center gap-1">
-            <h4 className="font-semibold mb-1">Shipping Address</h4>
+            <h4 className="font-semibold mb-1">{t("shipping_address")}</h4>
             <div className="flex flex-col text-sm gap-1 text-gray-600">
               <p>{placeOrderMutation.data.shippingAddress.companyName}</p>
               <p>{placeOrderMutation.data.shippingAddress.street}</p>
@@ -128,7 +131,7 @@ export const CheckoutComplete = ({
           </div>
 
           <div className="flex flex-col justify-center gap-1">
-            <h4 className="font-semibold mb-1">Shipping Method</h4>
+            <h4 className="font-semibold mb-1">{t("shipping_method")}</h4>
             <div className="flex flex-col text-sm gap-1 text-gray-600">
               <p>
                 {placeOrderMutation.data.shippingMethod.name}:{" "}
@@ -138,7 +141,7 @@ export const CheckoutComplete = ({
           </div>
 
           <div className="flex flex-col justify-center gap-1">
-            <h4 className="font-semibold mb-1">Payment Method</h4>
+            <h4 className="font-semibold mb-1">{t("payment_method")}</h4>
             <div className="flex flex-col text-sm gap-1 text-gray-600">
               <p>
                 {placeOrderMutation.data.paymentMethod.type}:{" "}
@@ -148,7 +151,7 @@ export const CheckoutComplete = ({
           </div>
 
           <div>
-            <h4 className="font-semibold mb-2">Ordered Items</h4>
+            <h4 className="font-semibold mb-2">{t("ordered_items")}</h4>
             {placeOrderMutation.data.items.map((product) => (
               <div className="flex items-center w-full gap-2">
                 <img
@@ -164,7 +167,7 @@ export const CheckoutComplete = ({
                   <div className="flex flex-col gap-1">
                     <p>{product.productName}</p>
                     <p className="text-gray-600">
-                      Width: {product.width} Size: {product.size}
+                      {t("width")}: {product.width} {t("size")}: {product.size}
                     </p>
                   </div>
                   <p className="self-center font-bold">{product.unitPrice}</p>
@@ -177,33 +180,31 @@ export const CheckoutComplete = ({
 
           <div className="flex flex-col w-full gap-2 justify-center items-center">
             <div className="flex justify-between w-full text-sm">
-              <p>Subtotal</p>
+              <p>{t("subtotal")}</p>
               <p>€{placeOrderMutation.data.totals.subtotal}</p>
             </div>
 
             <div className="flex justify-between w-full text-sm">
-              <p>Shipping</p>
+              <p>{t("shipping")}</p>
               <p>{placeOrderMutation.data.totals.shippingCost}</p>
             </div>
 
             <div className="flex justify-between w-full text-2xl font-medium">
-              <p>Total</p>
+              <p>{t("total_amount")}</p>
               <p>€{placeOrderMutation.data.totals.total}</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <p className="text-gray-500 mb-4">
-        We've sent you a confirmation email with your order details.
-      </p>
+      <p className="text-gray-500 mb-4">{t("sent_confirmation_mail")}</p>
 
       <Button
         onClick={() => {
           navigate("/");
         }}
       >
-        Back to Shop
+        {t("back_to_shop")}
       </Button>
     </div>
   );

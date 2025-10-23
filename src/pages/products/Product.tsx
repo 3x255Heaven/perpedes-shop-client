@@ -23,11 +23,13 @@ import {
   useSimilarProductsQuery,
   type ProductVariation,
 } from "@/hooks/useProducts";
+import { useTranslation } from "react-i18next";
 
 const SELECTION_UNITS = ["PAIR", "UNPAIRED"] as const;
 
 export const Product = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { id } = useParams();
   const { addItem } = useCart();
   const [variations, setVariations] = useState<ProductVariation[]>([]);
@@ -127,10 +129,10 @@ export const Product = () => {
         addItem({ ...product, ...variation });
       }
 
-      toast.success("Products are added to the cart!");
+      toast.success(`${t("product_added_to_cart")}`);
       setVariations([]);
     } else {
-      toast.error("Something went wrong, please try again!");
+      toast.error(`${t("something_went_wrong")}`);
     }
   };
 
@@ -171,7 +173,7 @@ export const Product = () => {
           className="flex flex-col items-center gap-4"
         >
           <p className="text-lg font-semibold mb-2">
-            Failed to load product details.
+            {t("something_went_wrong")}
           </p>
           <p className="text-sm mb-4 text-gray-500">
             {(productError as Error)?.message || "Something went wrong."}
@@ -184,7 +186,7 @@ export const Product = () => {
             className="gap-2"
           >
             <RefreshCcw className="w-4 h-4" />
-            Try Again
+            {t("try_again")}
           </Button>
         </motion.div>
       </div>
@@ -205,7 +207,7 @@ export const Product = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
         >
-          Product not found.
+          {t("no_product_found")}
         </motion.p>
       </div>
     );
@@ -297,7 +299,7 @@ export const Product = () => {
           </div>
         </div>
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-center gap-3">
-          <p className="font-semibold text-lg sm:text-base">Unit:</p>
+          <p className="font-semibold text-lg sm:text-base">{t("unit")}:</p>
 
           <div className="flex justify-center sm:justify-end w-full sm:w-auto">
             <ButtonGroup className="flex flex-wrap justify-center sm:justify-end">
@@ -325,10 +327,12 @@ export const Product = () => {
         {selectedUnit === "UNPAIRED" ? (
           <div className="flex lg:flex-row flex-col gap-2 w-full">
             <div className="flex flex-col w-full bg-muted/30 p-4 rounded-2xl shadow-sm border border-gray-100">
-              <Badge>Left</Badge>
+              <Badge>{t("left")}</Badge>
 
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-center gap-3">
-                <p className="font-semibold text-lg sm:text-base">Width:</p>
+                <p className="font-semibold text-lg sm:text-base">
+                  {t("width")}:
+                </p>
 
                 <div className="flex justify-center sm:justify-end w-full sm:w-auto">
                   <ButtonGroup className="flex flex-wrap justify-center sm:justify-end">
@@ -357,7 +361,7 @@ export const Product = () => {
                 <div className="flex flex-col justify-center items-start">
                   <div className="flex flex-col w-full">
                     <p className="font-semibold text-lg sm:text-base my-4">
-                      All sizes
+                      {t("all_sizes")}
                     </p>
                     <div className="flex flex-wrap gap-2 justify-center">
                       {leftUnitTypeSizes.variationsByWidth[
@@ -386,10 +390,9 @@ export const Product = () => {
               ) : (
                 <Empty className="border mt-4 !p-4">
                   <EmptyHeader>
-                    <EmptyTitle>Select Width</EmptyTitle>
+                    <EmptyTitle>{t("select_width")}</EmptyTitle>
                     <EmptyDescription>
-                      In order to see all available sizes for given product,
-                      firstly select Width of the product.
+                      {t("select_width_description")}
                     </EmptyDescription>
                   </EmptyHeader>
                 </Empty>
@@ -397,10 +400,12 @@ export const Product = () => {
             </div>
 
             <div className="flex flex-col w-full bg-muted/30 p-4 rounded-2xl shadow-sm border border-gray-100">
-              <Badge>Right</Badge>
+              <Badge>{t("right")}</Badge>
 
               <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-center gap-3">
-                <p className="font-semibold text-lg sm:text-base">Width:</p>
+                <p className="font-semibold text-lg sm:text-base">
+                  {t("width")}:
+                </p>
 
                 <div className="flex justify-center sm:justify-end w-full sm:w-auto">
                   <ButtonGroup className="flex flex-wrap justify-center sm:justify-end">
@@ -429,7 +434,7 @@ export const Product = () => {
                 <div className="flex flex-col justify-center items-start">
                   <div className="flex flex-col w-full">
                     <p className="font-semibold text-lg sm:text-base my-4">
-                      All sizes
+                      {t("all_sizes")}
                     </p>
                     <div className="flex flex-wrap gap-2 justify-center">
                       {rightUnitTypeSizes.variationsByWidth[
@@ -458,10 +463,9 @@ export const Product = () => {
               ) : (
                 <Empty className="border mt-4 !p-4">
                   <EmptyHeader>
-                    <EmptyTitle>Select Width</EmptyTitle>
+                    <EmptyTitle>{t("select_width")}</EmptyTitle>
                     <EmptyDescription>
-                      In order to see all available sizes for given product,
-                      firstly select Width of the product.
+                      {t("select_width_description")}
                     </EmptyDescription>
                   </EmptyHeader>
                 </Empty>
@@ -471,7 +475,9 @@ export const Product = () => {
         ) : (
           <div>
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-center gap-3">
-              <p className="font-semibold text-lg sm:text-base">Width:</p>
+              <p className="font-semibold text-lg sm:text-base">
+                {t("width")}:
+              </p>
 
               <div className="flex justify-center sm:justify-end w-full sm:w-auto">
                 <ButtonGroup className="flex flex-wrap justify-center sm:justify-end">
@@ -500,7 +506,7 @@ export const Product = () => {
               <div className="flex flex-col justify-center items-start">
                 <div className="flex flex-col w-full">
                   <p className="font-semibold text-lg sm:text-base my-4">
-                    All sizes
+                    {t("all_sizes")}
                   </p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     {pairUnitTypeSizes.variationsByWidth[selectedWidthPair].map(
@@ -529,10 +535,9 @@ export const Product = () => {
             ) : (
               <Empty className="border mt-4 !p-4">
                 <EmptyHeader>
-                  <EmptyTitle>Select Width</EmptyTitle>
+                  <EmptyTitle>{t("select_width")}</EmptyTitle>
                   <EmptyDescription>
-                    In order to see all available sizes for given product,
-                    firstly select Width of the product.
+                    {t("select_width_description")}
                   </EmptyDescription>
                 </EmptyHeader>
               </Empty>
@@ -542,7 +547,7 @@ export const Product = () => {
 
         {variations.length > 0 && (
           <div className="flex flex-col w-full">
-            <Button onClick={addToCart}>Add to Cart</Button>
+            <Button onClick={addToCart}>{t("add_to_cart")}</Button>
           </div>
         )}
       </motion.div>

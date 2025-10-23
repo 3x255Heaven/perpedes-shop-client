@@ -1,7 +1,10 @@
 import { Card, CardContent } from "@/components/shared/card";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export const PersonalInformation = () => {
+  const { t } = useTranslation();
+
   const { user } = useAuth();
 
   return (
@@ -11,16 +14,16 @@ export const PersonalInformation = () => {
           <CardContent className="p-6 flex flex-col gap-6">
             <div>
               <h3 className="text-lg font-semibold mb-2">
-                Personal Information
+                {t("personal_information")}
               </h3>
               <p className="text-sm text-gray-500">
-                Your saved contact and address details.
+                {t("personal_information_description")}
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
               <div>
-                <p className="text-gray-500">Customer Number</p>
+                <p className="text-gray-500">{t("customer_number")}</p>
                 <p className="font-medium">{user?.id}</p>
               </div>
               <div>
@@ -28,15 +31,15 @@ export const PersonalInformation = () => {
                 <p className="font-medium">{user?.name}</p>
               </div>
               <div>
-                <p className="text-gray-500">Contact Person</p>
+                <p className="text-gray-500">{t("contact_person")}</p>
                 <p className="font-medium">{user?.contactPerson}</p>
               </div>
               <div>
-                <p className="text-gray-500">Street</p>
+                <p className="text-gray-500">{t("street")}</p>
                 <p className="font-medium">{user?.street}</p>
               </div>
               <div>
-                <p className="text-gray-500">City</p>
+                <p className="text-gray-500">{t("city")}</p>
                 <p className="font-medium">
                   {user?.zip} {user?.city}
                 </p>

@@ -6,22 +6,32 @@ import { User, ShoppingBag } from "lucide-react";
 import { PersonalInformation } from "./PersonalInformation";
 import { OrderHistory } from "./OrderHistory";
 import { OrderDetail } from "./OrderDetail";
-
-const tabs = [
-  { id: "personal", label: "Personal Information", icon: <User size={16} /> },
-  { id: "orders", label: "Order History", icon: <ShoppingBag size={16} /> },
-] as const;
+import { useTranslation } from "react-i18next";
 
 export const Profile = () => {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] =
     useState<(typeof tabs)[number]["id"]>("personal");
   const [selectedOrder, setSelectedOrder] = useState<string | null>(null);
+
+  const tabs = [
+    {
+      id: "personal",
+      label: t("personal_information"),
+      icon: <User size={16} />,
+    },
+    {
+      id: "orders",
+      label: t("order_history"),
+      icon: <ShoppingBag size={16} />,
+    },
+  ] as const;
 
   return (
     <div className="min-h-screen bg-muted/20 flex flex-col justify-center items-center px-4 py-8 sm:px-6 md:px-8">
       <div className="w-full max-w-4xl bg-muted/50 p-6 sm:p-8 rounded-2xl shadow-sm">
         <h2 className="text-xl sm:text-2xl font-semibold mb-6 text-center md:text-left">
-          My Profile
+          {t("my_profile")}
         </h2>
 
         {!selectedOrder && (

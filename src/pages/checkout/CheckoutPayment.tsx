@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/shared/card";
 import { Banknote, BookA, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import type { PaymentMethodItem } from "./Checkout";
+import { useTranslation } from "react-i18next";
 
 export const CheckoutPayment = ({
   onBack,
@@ -16,6 +17,8 @@ export const CheckoutPayment = ({
   selectedPaymentMethod: PaymentMethodItem;
   setSelectedPaymentMethod: (data: PaymentMethodItem) => void;
 }) => {
+  const { t } = useTranslation();
+
   const { total } = useCart();
 
   return (
@@ -23,7 +26,7 @@ export const CheckoutPayment = ({
       <div className="flex-1 space-y-6">
         <Card>
           <CardContent className="p-4 space-y-3">
-            <h3 className="font-semibold mb-2">Payment Method</h3>
+            <h3 className="font-semibold mb-2">{t("payment_method")}</h3>
 
             <div
               onClick={() => {

@@ -5,6 +5,7 @@ import { Box, ChevronLeft, ChevronRight, Truck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import type { ShippingMethodItem } from "./Checkout";
+import { useTranslation } from "react-i18next";
 
 export const CheckoutShipping = ({
   onBack,
@@ -17,6 +18,7 @@ export const CheckoutShipping = ({
   selectedShippingMethod: ShippingMethodItem;
   setSelectedShippingMethod: (data: ShippingMethodItem) => void;
 }) => {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { total } = useCart();
 
@@ -25,7 +27,7 @@ export const CheckoutShipping = ({
       <div className="flex-1 space-y-6">
         <Card>
           <CardContent className="p-4">
-            <h3 className="font-semibold mb-2">Shipping Address</h3>
+            <h3 className="font-semibold mb-2">{t("shipping_address")}</h3>
             <div className="flex flex-col text-sm gap-1 text-gray-600">
               <p>{user?.name}</p>
               <p>{user?.street}</p>
@@ -39,7 +41,7 @@ export const CheckoutShipping = ({
 
         <Card>
           <CardContent className="p-4 space-y-3">
-            <h3 className="font-semibold mb-2">Shipping Method</h3>
+            <h3 className="font-semibold mb-2">{t("shipping_method")}</h3>
 
             <div
               onClick={() => {
@@ -98,10 +100,10 @@ export const CheckoutShipping = ({
 
       <Summary total={total}>
         <Button className="w-full mt-4" onClick={onNext}>
-          Continue to Payment <ChevronRight />
+          {t("continue_to_payment")} <ChevronRight />
         </Button>
         <Button variant="outline" className="w-full mt-2" onClick={onBack}>
-          <ChevronLeft /> Back to Cart
+          <ChevronLeft /> {t("back_to_cart")}
         </Button>
       </Summary>
     </div>

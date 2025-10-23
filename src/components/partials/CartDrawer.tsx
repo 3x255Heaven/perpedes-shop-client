@@ -23,8 +23,10 @@ import {
 } from "../shared/empty";
 import { useNavigate } from "react-router";
 import { useAuth } from "@/context/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export function CartDrawer() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
   const { products, total, removeItem } = useCart();
@@ -35,7 +37,7 @@ export function CartDrawer() {
       <DrawerTrigger asChild>
         <Button variant="outline" className="relative">
           <ShoppingCart className="mr-2 h-5 w-5" />
-          Cart
+          {t("cart")}
           {products.length > 0 && (
             <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
               {products.length}
@@ -46,7 +48,9 @@ export function CartDrawer() {
 
       <DrawerContent className="fixed bottom-0 left-0 right-0 z-50 mt-0 rounded-t-2xl border-t bg-background sm:inset-y-0 sm:right-0 sm:left-auto sm:h-full sm:w-[400px] sm:rounded-none sm:border-l sm:animate-in sm:slide-in-from-right">
         <DrawerHeader className="flex flex-row items-center justify-between border-b">
-          <DrawerTitle className="text-lg font-semibold">Cart</DrawerTitle>
+          <DrawerTitle className="text-lg font-semibold">
+            {t("cart")}
+          </DrawerTitle>
           <DrawerClose asChild>
             <Button variant="ghost" size="icon">
               <X className="h-5 w-5" />
@@ -78,7 +82,7 @@ export function CartDrawer() {
                   <div className="flex-1 text-center">
                     <h4 className="font-medium line-clamp-1">{product.name}</h4>
                     <p className="text-sm text-muted-foreground">
-                      Quantity: {product.quantity}
+                      {t("quantity")}: {product.quantity}
                     </p>
                     {isAuthenticated && (
                       <p className="font-semibold">
@@ -95,10 +99,8 @@ export function CartDrawer() {
                 <EmptyMedia variant="icon">
                   <ShoppingBag />
                 </EmptyMedia>
-                <EmptyTitle>Your cart is empty</EmptyTitle>
-                <EmptyDescription>
-                  We are sure you can find something for yourself!
-                </EmptyDescription>
+                <EmptyTitle>{t("empty_cart_title")}</EmptyTitle>
+                <EmptyDescription>{t("empty_cart_subtitle")}</EmptyDescription>
               </EmptyHeader>
             </Empty>
           )}
@@ -120,13 +122,13 @@ export function CartDrawer() {
                   setOpen(false);
                 }}
               >
-                Proceed to Checkout
+                {t("proceed_to_checkout")}
               </Button>
             </>
           )}
           <DrawerClose asChild>
             <Button variant="outline" className="w-full">
-              Continue Shopping
+              {t("continue_shopping")}
             </Button>
           </DrawerClose>
         </DrawerFooter>
