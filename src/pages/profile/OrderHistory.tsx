@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/shared/card";
 import { Badge } from "@/components/shared/badge";
-import { useOrdersQuery } from "@/hooks/useOrders";
+import { useCustomerOrdersQuery } from "@/hooks/useOrders";
 import { Spinner } from "@/components/shared/spinner";
 import { Button } from "@/components/shared/button";
 import {
@@ -12,6 +12,7 @@ import {
 } from "@/components/shared/empty";
 import { ShoppingBag } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/context/AuthContext";
 
 interface OrderHistoryProps {
   onSelectOrder: (orderNumber: string) => void;
@@ -19,8 +20,9 @@ interface OrderHistoryProps {
 
 export const OrderHistory = ({ onSelectOrder }: OrderHistoryProps) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
 
-  const ordersQuery = useOrdersQuery();
+  const ordersQuery = useCustomerOrdersQuery(user?.id.toString());
 
   if (ordersQuery.isPending) {
     return (

@@ -35,10 +35,11 @@ export const CheckoutComplete = ({
   const placeOrderMutation = usePlaceOrderMutation();
 
   useEffect(() => {
-    if (!user) return;
+    if (!user || !shippingMethod || !paymentMethod) return;
 
     placeOrderMutation.mutate(
       {
+        customerId: user.id.toString(),
         shippingAddress: {
           companyName: user.name,
           street: user.street,

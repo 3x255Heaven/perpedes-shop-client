@@ -22,6 +22,7 @@ export type OrderItem = {
 };
 
 export type PlaceOrderPayload = {
+  customerId: string;
   shippingAddress: ShippingAddress;
   shippingMethodCode: string;
   paymentMethodCode: string;
@@ -111,6 +112,19 @@ export function useOrdersQuery() {
       const response = await axiosInstance.get("/orders");
       return response.data;
     },
+  });
+}
+
+export function useCustomerOrdersQuery(customerId: string | undefined) {
+  return useQuery<OrderResponse[]>({
+    queryKey: ["orders", customerId],
+    queryFn: async () => {
+      const response = await axiosInstance.get(
+        `/orders/customer/${customerId}`
+      );
+      return response.data;
+    },
+    enabled: !!customerId,
   });
 }
 

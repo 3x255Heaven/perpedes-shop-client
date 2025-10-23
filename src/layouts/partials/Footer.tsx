@@ -6,7 +6,7 @@ export const Footer = () => {
       <div className="flex flex-col gap-6 md:gap-12">
         <div>
           <h4 className="font-semibold mb-2">Perpedes</h4>
-          <p>Gesunder Fuß und Gutes Gefühl</p>
+          <p>Orthopädie-Schuhtechnik für Menschen in Bewegung</p>
         </div>
         <div className="flex gap-4 text-gray-400">
           <Instagram className="cursor-pointer w-5 h-5 md:w-6 md:h-6" />
