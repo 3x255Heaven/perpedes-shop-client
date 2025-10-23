@@ -126,7 +126,6 @@ export const CheckoutComplete = ({
                 {placeOrderMutation.data.shippingAddress.postalCode}{" "}
                 {placeOrderMutation.data.shippingAddress.city}
               </p>
-              <p>{user?.id}</p>
             </div>
           </div>
 
