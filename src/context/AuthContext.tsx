@@ -26,7 +26,7 @@ const mockUsers = [
     city: "Chemnitz",
     contactPerson: "Nicole Schwierz",
     email: "info@kajamed.de",
-    password: "hXeQWgOOceMs",
+    password: "test1234",
   },
   {
     id: 13045,
@@ -36,7 +36,7 @@ const mockUsers = [
     city: "Osnabrück",
     contactPerson: "Schuh + Sport Molitor",
     email: "info@molitor-os.de",
-    password: "p4cMRiSq3LTp",
+    password: "test1234",
   },
   {
     id: 10154,
@@ -46,7 +46,7 @@ const mockUsers = [
     city: "Pirmasens",
     contactPerson: "Rainer Kölsch",
     email: "info@ortho-koelsch.de",
-    password: "QwltOihwdlUb",
+    password: "test1234",
   },
   {
     id: 12132,
@@ -56,7 +56,7 @@ const mockUsers = [
     city: "Möglingen",
     contactPerson: "Chiara",
     email: "info@kempaundbeu.de",
-    password: "qFO3SQMuK13y",
+    password: "test1234",
   },
   {
     id: 11354,
@@ -66,7 +66,7 @@ const mockUsers = [
     city: "Werne",
     contactPerson: "Arne Steinbrink",
     email: "info@schuhtechnik-steinbrink.de",
-    password: "Zanmv1Vw6Gwv",
+    password: "test1234",
   },
   {
     id: 11078,
@@ -76,7 +76,7 @@ const mockUsers = [
     city: "Röhrmoos",
     contactPerson: "Tilman Steger",
     email: "info@orthopaedieschuhmeisterei.de",
-    password: "Nlx7peHfliqu",
+    password: "test1234",
   },
   {
     id: 14007,
@@ -86,7 +86,7 @@ const mockUsers = [
     city: "Hameln",
     contactPerson: "Doris Sydow",
     email: "info@sanitaetshaus-weigel.de",
-    password: "2uqgJN13YtDB",
+    password: "test1234",
   },
   {
     id: 13562,
@@ -96,7 +96,7 @@ const mockUsers = [
     city: "Kirchheimbolanden",
     contactPerson: "Thomas Petry",
     email: "info@petry-schuh-service.de",
-    password: "cc2w5IjlbBuh",
+    password: "test1234",
   },
   {
     id: 12820,
@@ -106,7 +106,7 @@ const mockUsers = [
     city: "Kerken",
     contactPerson: "Ralf Berrischen",
     email: "info@berrischen.de",
-    password: "zzQJdJJaMZSe",
+    password: "test1234",
   },
   {
     id: 14970,
@@ -116,7 +116,7 @@ const mockUsers = [
     city: "Tulln",
     contactPerson: "Eva Demmer",
     email: "office@fusszentrum-demmer.at",
-    password: "7gbpvwenkdoB",
+    password: "test1234",
   },
   {
     id: 12603,
@@ -126,7 +126,7 @@ const mockUsers = [
     city: "Marsberg",
     contactPerson: "Philipp Dülme",
     email: "duelme@borghoff-bredelar.de",
-    password: "XTtjzh2irx4A",
+    password: "test1234",
   },
 ];
 
