@@ -1,7 +1,7 @@
 import { Summary } from "@/components/partials/Summary";
 import { Button } from "@/components/shared/button";
 import { Card, CardContent } from "@/components/shared/card";
-import { Box, ChevronLeft, ChevronRight, Truck } from "lucide-react";
+import { ChevronLeft, ChevronRight, Truck } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import type { ShippingMethodItem } from "./Checkout";
