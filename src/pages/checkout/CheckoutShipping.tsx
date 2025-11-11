@@ -69,7 +69,7 @@ export const CheckoutShipping = ({
               <p className="font-medium">Free</p>
             </div>
 
-            <div
+            {/* <div
               onClick={() => {
                 setSelectedShippingMethod({
                   id: "express",
@@ -93,7 +93,7 @@ export const CheckoutShipping = ({
                 </div>
               </div>
               <p className="font-medium">€9,99</p>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
       </div>
