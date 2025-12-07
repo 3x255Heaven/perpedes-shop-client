@@ -298,6 +298,16 @@ const mockUsers = [
     email: "alexandra@grashei.de",
     password: "KAAULp8V1WRm",
   },
+  {
+    id: 10837,
+    name: "Kajamed GmbH",
+    street: "Am Bahnhof 4",
+    zip: 8056,
+    city: "Zwickau",
+    contactPerson: "Felix Kieschnick",
+    email: "F.Kieschnick@kajamed.de",
+    password: "a5x5cPfwiPpz",
+  },
 ];
 
 type AuthContextType = {
