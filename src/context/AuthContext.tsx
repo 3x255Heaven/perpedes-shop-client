@@ -308,6 +308,16 @@ const mockUsers = [
     email: "F.Kieschnick@kajamed.de",
     password: "a5x5cPfwiPpz",
   },
+  {
+    id: 1462,
+    name: "Sanitätshaus Laumann e.K.",
+    street: "Rembertistraße 32",
+    zip: 28203,
+    city: "Bremen",
+    contactPerson: "Hendrik Schnadthorst",
+    email: "info@sanitaetshaus-laumann.de",
+    password: "onSsTkMVZlX4",
+  },
 ];
 
 type AuthContextType = {
