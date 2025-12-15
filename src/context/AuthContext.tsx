@@ -318,6 +318,16 @@ const mockUsers = [
     email: "info@sanitaetshaus-laumann.de",
     password: "onSsTkMVZlX4",
   },
+  {
+    id: 14878,
+    name: "Eichsfelder Orthopädietechnik, Inh. Katja Schulz",
+    street: "Hausener Weg 69",
+    zip: 37339,
+    city: "Leinefelde-Worbis",
+    contactPerson: "Katja Schulz",
+    email: "info@eichsfelder-ot.de",
+    password: "Tuk8t0qAKDEc",
+  },
 ];
 
 type AuthContextType = {
