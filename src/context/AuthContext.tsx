@@ -105,7 +105,7 @@ const mockUsers = [
     zip: 97074,
     city: "Würzburg",
     contactPerson: "Udo Konrad",
-    email: "u.konrad@efinger-ot.de",
+    email: "info@efinger-ot.de",
     password: "y5y2141AaDJE",
   },
   {
@@ -328,6 +328,36 @@ const mockUsers = [
     email: "info@eichsfelder-ot.de",
     password: "Tuk8t0qAKDEc",
   },
+  {
+    id: 11652,
+    name: "Siebeneck Orthopädietechnik GmbH",
+    street: "Loerstr. 17a",
+    zip: 48143,
+    city: "Münster",
+    contactPerson: "Malte Siebels ",
+    email: "werkstatt@orthopaedie-siebeneck.de",
+    password: "mkN3e7CnJLw5",
+  },
+  {
+    id: 10152,
+    name: "Sanitätshaus Brauns",
+    street: "Mühlgasse 4",
+    zip: 35745,
+    city: "Herborn/Dillkr.",
+    contactPerson: "Morten Thielmann",
+    email: "werkstatt@sani-brauns.de",
+    password: "ephGMqGBGwem",
+  },
+  {
+    id: 14639,
+    name: "nova orthotec",
+    street: "Nuthedamm 19",
+    zip: 14974,
+    city: "Ludwigsfelde",
+    contactPerson: "Carola Fischer",
+    email: "info@orthesen-manufaktur.de",
+    password: "dZUhD2n7Nks0",
+  },
 ];
 
 type AuthContextType = {
@@ -365,7 +395,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await new Promise((r) => setTimeout(r, 800));
 
       const foundUser = mockUsers.find(
-        (user) => user.email === email && user.password === password
+        (user) => user.email === email && user.password === password,
       );
 
       if (!foundUser) {
