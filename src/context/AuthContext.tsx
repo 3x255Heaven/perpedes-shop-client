@@ -9,6 +9,46 @@ import type { User } from "@/hooks/useUser";
 
 const mockUsers = [
   {
+    "id": 17408,
+    "name": "Rheinorthopädie Ag",
+    "street": "Junkholzweg 1",
+    "zip": 4303,
+    "city": "Kaiseraugst",
+    "contactPerson": "Marc Gschwind",
+    "email": "info@rheinorthopaedie.ch",
+    "password": "0XdZif935r8B"
+  },
+  {
+    "id": 20104,
+    "name": "ORFO GmbH / Einkauf",
+    "street": "St. Johann 2-4",
+    "zip": 91056,
+    "city": "Erlangen",
+    "contactPerson": "Tino Friedenberger",
+    "email": "einkauf@orfo.de",
+    "password": "UFjjHsC3eINY"
+  },
+  {
+    "id": 13502,
+    "name": "Orthopädieschuhtechnik Lietze GmbH",
+    "street": "Bahnhofsweg 18",
+    "zip": 1833,
+    "city": "Stolpen",
+    "contactPerson": "Lutz Lietze",
+    "email": "lutz.lietze@gmx.de",
+    "password": "OgbczMSoVGyM"
+  },
+  {
+    "id": 10141,
+    "name": "Sanitätshaus Behrmann GmbH & Co.KG",
+    "street": "Rheinstraße  97",
+    "zip": 64295,
+    "city": "Darmstadt",
+    "contactPerson": "Alexander Behrmann",
+    "email": "service@sani-behrmann.de",
+    "password": "5jYb7NdPLphB"
+  },
+  {
     "id": 16992,
     "name": "Sanitätshaus im Regental Schuierer & Windisch GbR",
     "street": "Hauptstr. 26",
@@ -76,7 +116,7 @@ const mockUsers = [
     "city": "Zürich",
     "contactPerson": "German Studer",
     "email": "german.studer@baehler.com",
-    "password": "roL79JDZtiWf#"
+    "password": "JUrCdAHikltD"
   },
   {
     "id": 13961,
@@ -166,7 +206,7 @@ const mockUsers = [
     "city": "Muralto",
     "contactPerson": "Emiliano Zanini",
     "email": "info@zanini-ortopedia.ch",
-    "password": "YZzdTqvo1h0m#"
+    "password": "hIrEoSfcQtAL"
   },
   {
     "id": 13231,
@@ -266,7 +306,7 @@ const mockUsers = [
     "city": "Wittenbach",
     "contactPerson": "Carsten Vöge",
     "email": "info@fussimzentrum.ch",
-    "password": "7gY8DgVeOUZ2#"
+    "password": "1g7gUXcqtGoX"
   },
   {
     "id": 12337,
@@ -506,7 +546,7 @@ const mockUsers = [
     "city": "Widen",
     "contactPerson": "Thomas Schär",
     "email": "info@schaer-schuhtechnik.ch",
-    "password": "sTZCQy6k6A1x#"
+    "password": "sTZCQy6k6A1x"
   },
   {
     "id": 11412,
@@ -526,7 +566,7 @@ const mockUsers = [
     "city": "Ditzingen",
     "contactPerson": "Fabio SIMONA",
     "email": "fabio.simona@crr-suva.ch",
-    "password": "kcfIkTRUAXZh#"
+    "password": "kcfIkTRUAXZh"
   },
   {
     "id": 17422,
@@ -666,7 +706,7 @@ const mockUsers = [
     "city": "Basel",
     "contactPerson": "Florence Ruepp",
     "email": "info@rene-ruepp.ch",
-    "password": "XA4HhSaPJ2jQ"
+    "password": "5B2mhFVTq7Rv"
   },
   {
     "id": 12787,
