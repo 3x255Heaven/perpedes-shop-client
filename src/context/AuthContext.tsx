@@ -166,7 +166,7 @@ const mockUsers = [
     "city": "Muralto",
     "contactPerson": "Emiliano Zanini",
     "email": "info@zanini-ortopedia.ch",
-    "password": "p4jSgstMmfmr"
+    "password": "YZzdTqvo1h0m"
   },
   {
     "id": 13231,
@@ -266,7 +266,7 @@ const mockUsers = [
     "city": "Wittenbach",
     "contactPerson": "Carsten Vöge",
     "email": "info@fussimzentrum.ch",
-    "password": "8F3DdXE9VQ7X"
+    "password": "7gY8DgVeOUZ2"
   },
   {
     "id": 12337,
