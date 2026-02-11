@@ -76,7 +76,7 @@ const mockUsers = [
     "city": "Zürich",
     "contactPerson": "German Studer",
     "email": "german.studer@baehler.com",
-    "password": "roL79JDZtiWf"
+    "password": "roL79JDZtiWf#"
   },
   {
     "id": 13961,
@@ -166,7 +166,7 @@ const mockUsers = [
     "city": "Muralto",
     "contactPerson": "Emiliano Zanini",
     "email": "info@zanini-ortopedia.ch",
-    "password": "YZzdTqvo1h0m"
+    "password": "YZzdTqvo1h0m#"
   },
   {
     "id": 13231,
@@ -266,7 +266,7 @@ const mockUsers = [
     "city": "Wittenbach",
     "contactPerson": "Carsten Vöge",
     "email": "info@fussimzentrum.ch",
-    "password": "7gY8DgVeOUZ2"
+    "password": "7gY8DgVeOUZ2#"
   },
   {
     "id": 12337,
@@ -506,7 +506,7 @@ const mockUsers = [
     "city": "Widen",
     "contactPerson": "Thomas Schär",
     "email": "info@schaer-schuhtechnik.ch",
-    "password": "sTZCQy6k6A1x"
+    "password": "sTZCQy6k6A1x#"
   },
   {
     "id": 11412,
@@ -526,7 +526,7 @@ const mockUsers = [
     "city": "Ditzingen",
     "contactPerson": "Fabio SIMONA",
     "email": "fabio.simona@crr-suva.ch",
-    "password": "kcfIkTRUAXZh"
+    "password": "kcfIkTRUAXZh#"
   },
   {
     "id": 17422,
