@@ -9,6 +9,86 @@ import type { User } from "@/hooks/useUser";
 
 const mockUsers = [
   {
+    "id": 2314,
+    "name": "Sanitätshaus Gäher",
+    "street": "Konrad-Zuse-Str. 4",
+    "zip": 48308,
+    "city": "Senden-Bösensell",
+    "contactPerson": "Christian Gäher",
+    "email": "werkstatt@sanitaetshaus-gaeher.de",
+    "password": "D46qTxE3Ad6b"
+  },
+  {
+    "id": 14144,
+    "name": "Sanitätshaus Sußbauer",
+    "street": "Im Gries  15",
+    "zip": 82481,
+    "city": "Mittenwald",
+    "contactPerson": "Christian Sußbauer",
+    "email": "info@sussbauer.com",
+    "password": "qWYZhMccUe5b"
+  },
+  {
+    "id": 14727,
+    "name": "WOLF ORTHOPAEDIETECHNIK GMBH",
+    "street": "Mainzerstraße 97",
+    "zip": 55411,
+    "city": "BINGEN AM RHEIN",
+    "contactPerson": "Werkstatt Orthopädie",
+    "email": "orthopaedie@wolf-ortec.de",
+    "password": "4GEg7iOfWroT"
+  },
+  {
+    "id": 1845,
+    "name": "Rützel Orthopädie- Schutechnik",
+    "street": "Flemingstr 3",
+    "zip": 36041,
+    "city": "Fulda",
+    "contactPerson": "Jörg Rützel",
+    "email": "medicum@orthopaedie-schuhtechnik-ruetzel.de",
+    "password": "OavVwnHoCwE1"
+  },
+  {
+    "id": 13151,
+    "name": "Sanitätshaus Weinmann GmbH ",
+    "street": " Heiniger Straße 28",
+    "zip": 73037,
+    "city": "Göppingen",
+    "contactPerson": "Stefanie Schurr",
+    "email": "ost@weinmann.care",
+    "password": "7lXkR68Posqr"
+  },
+  {
+    "id": 13688,
+    "name": "Bösch Orthopedia",
+    "street": "Via vicari 4a",
+    "zip": 6900,
+    "city": "Lugano",
+    "contactPerson": "Sandro Bösch",
+    "email": "bortho@bluewin.ch",
+    "password": ""
+  },
+  {
+    "id": 12883,
+    "name": "Butz & Staab e. K.",
+    "street": "Untere Bahnhofstr. 42",
+    "zip": 82110,
+    "city": "Germering",
+    "contactPerson": "Melanie Nie",
+    "email": "info@butzundstaab.de",
+    "password": "PP5NAlSr2u6z"
+  },
+  {
+    "id": 13637,
+    "name": "Orthopädie-Technik Sanitätshaus Müller GmbH",
+    "street": "Albertstraße 29a",
+    "zip": 9526,
+    "city": "Olbernhau",
+    "contactPerson": "Thomas Müller",
+    "email": "Info@orthopaedie-technik-muller.de",
+    "password": "wXTjkEqIRPRL"
+  },
+  {
     "id": 17549,
     "name": "PädiTec GmbH&Co.KG",
     "street": "Bienenhof 8",
