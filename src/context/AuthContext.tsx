@@ -9,6 +9,86 @@ import type { User } from "@/hooks/useUser";
 
 const mockUsers = [
   {
+    "id": 11180,
+    "name": "Mediteam GmbH & Co. KG",
+    "street": "Heganger 18",
+    "zip": 96103,
+    "city": "Hallstadt",
+    "contactPerson": "Johannes Wörner",
+    "email": "j.woerner@mediteam.de",
+    "password": "6IKAgUDIWIAL"
+  },
+  {
+    "id": 13800,
+    "name": "Orthopädie Technik NF GmbH",
+    "street": "Industriestraße 24",
+    "zip": 25917,
+    "city": "Leck",
+    "contactPerson": "Timo Jahn",
+    "email": "ortho@ot-nf.de",
+    "password": "jbuAnWca01Lf"
+  },
+  {
+    "id": 16006,
+    "name": "Zapfe Orthopädie-Technik GmbH",
+    "street": "Streitstr. 11-13",
+    "zip": 13587,
+    "city": "Berlin",
+    "contactPerson": "Stefan Bergmann",
+    "email": "stefan.bergmann@zapfe.de",
+    "password": "KUbiCwcAnCmF"
+  },
+  {
+    "id": 20242,
+    "name": "Buhr Orthopädie-Schuhtechnik",
+    "street": "Bahnhofstr. 17",
+    "zip": 26954,
+    "city": "Nordenham",
+    "contactPerson": "Daniela Duhm",
+    "email": "info@buhr-os.de",
+    "password": "9gXvPye960eq"
+  },
+  {
+    "id": 20160,
+    "name": "TR OST GmbH",
+    "street": "Hauptstraße 80",
+    "zip": 25462,
+    "city": "Rellingen",
+    "contactPerson": "Torben Peik",
+    "email": "info@tritschoks.de",
+    "password": "4hhQG3rNQlZ6"
+  },
+  {
+    "id": 10797,
+    "name": "Orthopädie Hertel",
+    "street": "Bärengasse 5",
+    "zip": 96231,
+    "city": "Bad Staffelstein",
+    "contactPerson": "Thomas Hertel",
+    "email": "orthopaedie-hertel@t-online.de",
+    "password": "Vv9Xu0os3Cbq"
+  },
+  {
+    "id": 15262,
+    "name": "Orthopädietechnik Scherfel  (Einzelunternehmen)",
+    "street": "Julian-Marchlewski-Ring 33c",
+    "zip": 16303,
+    "city": "16303 Schwedt",
+    "contactPerson": "Orthopädietechnik Scherfel",
+    "email": "scherfel-orthopaedietechnik@t-online.de",
+    "password": "jF31lQdDJf37"
+  },
+  {
+    "id": 10855,
+    "name": "Sanisax Sanitätshaus GmbH",
+    "street": "GROSSENHAINER STRASSE 44 B",
+    "zip": 1127,
+    "city": "Dresden",
+    "contactPerson": "STEFFEN ISRAEL",
+    "email": "otwerk@sanisax.net",
+    "password": "SF9BYi4PYANm"
+  },
+  {
     "id": 2314,
     "name": "Sanitätshaus Gäher",
     "street": "Konrad-Zuse-Str. 4",
