@@ -29,14 +29,11 @@ export const CheckoutShipping = ({
           <CardContent className="p-4">
             <h3 className="font-semibold mb-2">{t("shipping_address")}</h3>
             <div className="flex flex-col text-sm gap-1 text-gray-600">
+              <p>{data?.client?.displayName ?? "N/A"}</p>
+              <p>{data?.client?.street1 ?? "N/A"}</p>
               <p>
-                {data?.firstName} {data?.lastName}
+                {data?.client?.zipCode} {data?.client?.place ?? "N/A"}
               </p>
-              <p>{data?.street ?? "N/A"}</p>
-              <p>
-                {data?.zip} {data?.city ?? "N/A"}
-              </p>
-              <p>{data?.id}</p>
             </div>
           </CardContent>
         </Card>

@@ -28,22 +28,22 @@ export const PersonalInformation = () => {
               </div>
               <div>
                 <p className="text-gray-500">Name</p>
+                <p className="font-medium">{data?.client?.displayName}</p>
+              </div>
+              <div>
+                <p className="text-gray-500">{t("contact_person")}</p>
                 <p className="font-medium">
                   {data?.firstName} {data?.lastName}
                 </p>
               </div>
               <div>
-                <p className="text-gray-500">{t("contact_person")}</p>
-                <p className="font-medium">{data?.contactPerson ?? "N/A"}</p>
-              </div>
-              <div>
                 <p className="text-gray-500">{t("street")}</p>
-                <p className="font-medium">{data?.street ?? "N/A"}</p>
+                <p className="font-medium">{data?.client?.street1 ?? "N/A"}</p>
               </div>
               <div>
                 <p className="text-gray-500">{t("city")}</p>
                 <p className="font-medium">
-                  {data?.zip} {data?.city ?? "N/A"}
+                  {data?.client?.zipCode} {data?.client?.place ?? "N/A"}
                 </p>
               </div>
               <div className="sm:col-span-2">

@@ -2,15 +2,30 @@ import { axiosInstance } from "@/lib/axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 
+export type Client = {
+  id: number;
+  clientId: string;
+  displayName: string;
+  country: string;
+  place: string | null;
+  area: string;
+  zipCode: string;
+  street1: string;
+  street2: string | null;
+  telefon1: string;
+  telefon2: string;
+  fax: string;
+};
+
 export type User = {
   id: number;
-  name: string;
-  street: string;
-  zip: number;
-  city: string;
-  contactPerson: string;
-  email: string;
-  password: string;
+  username: string;
+  role: string;
+  firstName: string;
+  lastName: string;
+  client: Client;
+  lastLogin: string;
+  lastLogout: string | null;
 };
 
 type LoginPayload = {

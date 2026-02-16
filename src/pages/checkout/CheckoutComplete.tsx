@@ -41,10 +41,10 @@ export const CheckoutComplete = ({
       {
         customerId: data.id.toString(),
         shippingAddress: {
-          companyName: data.username,
-          street: "",
-          postalCode: "",
-          city: "",
+          companyName: data.client?.displayName,
+          street: data.client?.street1,
+          postalCode: data.client?.zipCode,
+          city: data.client?.place,
           country: "Deutschland",
         },
         shippingMethodCode: shippingMethod.id,

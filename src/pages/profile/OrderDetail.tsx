@@ -79,7 +79,9 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
               <p>
                 {order.shippingAddress.postalCode} {order.shippingAddress.city}
               </p>
-              <p>{data?.contactPerson ?? "N/A"}</p>
+              <p>
+                {data?.firstName} {data?.lastName}
+              </p>
               <p>{data?.username}</p>
             </div>
           </div>
