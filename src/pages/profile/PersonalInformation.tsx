@@ -24,7 +24,7 @@ export const PersonalInformation = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 text-sm">
               <div>
                 <p className="text-gray-500">{t("customer_number")}</p>
-                <p className="font-medium">{data?.id}</p>
+                <p className="font-medium">{data?.client?.clientId}</p>
               </div>
               <div>
                 <p className="text-gray-500">Name</p>
