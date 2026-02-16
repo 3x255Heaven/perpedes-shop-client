@@ -88,7 +88,7 @@ export function useProductShoeSelectionQuery(productId: string | undefined) {
     queryKey: ["catalog", "products", productId, "selection-options"],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `/catalog/products/${productId}/selection-options`
+        `/public/catalog/products/${productId}/selection-options`,
       );
       return response.data;
     },
@@ -99,19 +99,19 @@ export function useProductShoeSelectionQuery(productId: string | undefined) {
 export function useProductSizesQuery(
   productId: string | undefined,
   unit: string | undefined,
-  includePrice: boolean
+  includePrice: boolean,
 ) {
   return useQuery<ProductSizesResponse>({
     queryKey: ["catalog", "products", productId, "sizes", unit, includePrice],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `/catalog/products/${productId}/sizes`,
+        `/public/catalog/products/${productId}/sizes`,
         {
           params: {
             ...(unit ? { unit } : {}),
             ...(includePrice ? { includePrice } : {}),
           },
-        }
+        },
       );
       return response.data;
     },
@@ -124,7 +124,7 @@ export function useProductQuery(productId: string | undefined) {
     queryKey: ["catalog", "products", productId],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `/catalog/products/${productId}`
+        `/public/catalog/products/${productId}`,
       );
       return response.data;
     },
@@ -134,14 +134,14 @@ export function useProductQuery(productId: string | undefined) {
 
 export function useSimilarProductsQuery(
   productId: string | undefined,
-  limit: number = 5
+  limit: number = 5,
 ) {
   return useQuery<ProductSimilarResponse>({
     queryKey: ["catalog", "products", productId, "similar", limit],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `/catalog/products/${productId}/similar`,
-        { params: { limit } }
+        `/public/catalog/products/${productId}/similar`,
+        { params: { limit } },
       );
       return response.data;
     },
@@ -153,12 +153,12 @@ export const useProductsInfiniteQuery = (
   size: number,
   sort: string,
   order: string,
-  filters: Record<string, string[]> = {}
+  filters: Record<string, string[]> = {},
 ) => {
   return useInfiniteQuery<ProductsResponse>({
     queryKey: ["catalog", size, sort, order, filters],
     queryFn: async ({ pageParam = 0 }) => {
-      const response = await axiosInstance.get("/catalog", {
+      const response = await axiosInstance.get("/public/catalog", {
         params: {
           page: pageParam,
           size,

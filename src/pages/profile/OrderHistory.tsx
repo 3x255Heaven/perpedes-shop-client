@@ -12,7 +12,7 @@ import {
 } from "@/components/shared/empty";
 import { ShoppingBag } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "@/context/AuthContext";
+import { useUserQuery } from "@/hooks/useUser";
 
 interface OrderHistoryProps {
   onSelectOrder: (orderNumber: string) => void;
@@ -20,9 +20,9 @@ interface OrderHistoryProps {
 
 export const OrderHistory = ({ onSelectOrder }: OrderHistoryProps) => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { data } = useUserQuery();
 
-  const ordersQuery = useCustomerOrdersQuery(user?.id.toString());
+  const ordersQuery = useCustomerOrdersQuery(data?.id.toString());
 
   if (ordersQuery.isPending) {
     return (

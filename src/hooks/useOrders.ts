@@ -109,7 +109,7 @@ export function useOrdersQuery() {
   return useQuery<OrderResponse[]>({
     queryKey: ["orders"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/orders");
+      const response = await axiosInstance.get("/public/orders");
       return response.data;
     },
   });
@@ -120,7 +120,7 @@ export function useCustomerOrdersQuery(customerId: string | undefined) {
     queryKey: ["orders", customerId],
     queryFn: async () => {
       const response = await axiosInstance.get(
-        `/orders/customer/${customerId}`
+        `/public/orders/customer/${customerId}`,
       );
       return response.data;
     },
@@ -132,7 +132,7 @@ export function useOrderQuery(orderId: string | undefined) {
   return useQuery<OrderResponse>({
     queryKey: ["orders", orderId],
     queryFn: async () => {
-      const response = await axiosInstance.get(`/orders/${orderId}`);
+      const response = await axiosInstance.get(`/public/orders/${orderId}`);
       return response.data;
     },
     enabled: !!orderId,
@@ -143,8 +143,8 @@ export const usePlaceOrderMutation = () => {
   return useMutation<PlaceOrderResponse, Error, PlaceOrderPayload>({
     mutationFn: async (payload) => {
       const { data } = await axiosInstance.post<PlaceOrderResponse>(
-        "/orders",
-        payload
+        "/public/orders",
+        payload,
       );
       return data;
     },

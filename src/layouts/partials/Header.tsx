@@ -8,6 +8,8 @@ import { cn } from "@/lib/utils";
 import Logo from "@/assets/images/Logo.png";
 import { CartDrawer } from "@/components/partials/CartDrawer";
 import { useCart } from "@/context/CartContext";
+import { useLogoutUserMutation } from "@/hooks/useUser";
+import { toast } from "sonner";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -16,7 +18,22 @@ export const Header = () => {
   const { clearCart } = useCart();
   const [isOpen, setIsOpen] = useState(false);
 
+  const { mutate: logout } = useLogoutUserMutation();
+
   const changeLanguage = (lng: string) => i18n.changeLanguage(lng);
+
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: () => {
+        logoutUser();
+        toast.success("Successfully logged out!");
+      },
+      onError: (error) => {
+        console.log(error);
+        toast.error("Something went wrong.");
+      },
+    });
+  };
 
   return (
     <header className="px-8 py-4 flex items-center justify-between relative">
@@ -51,7 +68,7 @@ export const Header = () => {
         <button
           className={cn(
             "border border-black px-1.5 py-1 rounded-full cursor-pointer",
-            i18n.language === "en" && "text-white bg-black"
+            i18n.language === "en" && "text-white bg-black",
           )}
           onClick={() => changeLanguage(i18n.language === "en" ? "de" : "en")}
         >
@@ -76,7 +93,7 @@ export const Header = () => {
             className="w-5 h-5 cursor-pointer"
             onClick={() => {
               clearCart();
-              logoutUser();
+              handleLogout();
             }}
           />
         )}
@@ -113,7 +130,7 @@ export const Header = () => {
             <button
               className={cn(
                 "border border-black px-1.5 py-1 rounded-full cursor-pointer",
-                i18n.language === "en" && "text-white bg-black"
+                i18n.language === "en" && "text-white bg-black",
               )}
               onClick={() =>
                 changeLanguage(i18n.language === "en" ? "de" : "en")
@@ -141,7 +158,7 @@ export const Header = () => {
                 className="w-5 h-5 cursor-pointer"
                 onClick={() => {
                   clearCart();
-                  logoutUser();
+                  handleLogout();
                 }}
               />
             )}

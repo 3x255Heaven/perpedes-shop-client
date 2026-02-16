@@ -1,5 +1,6 @@
 import { axiosInstance } from "@/lib/axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 
 export type User = {
   id: number;
@@ -35,10 +36,18 @@ export const useLoginUserMutation = () => {
   return useMutation<LoginResponse, Error, LoginPayload>({
     mutationFn: async (credentials) => {
       const response = await axiosInstance.post<LoginResponse>(
-        "/auth/login",
-        credentials
+        "/public/auth/login",
+        credentials,
       );
       return response.data;
+    },
+  });
+};
+
+export const useLogoutUserMutation = () => {
+  return useMutation<void, AxiosError, void>({
+    mutationFn: async () => {
+      await axiosInstance.post("/public/auth/logout");
     },
   });
 };

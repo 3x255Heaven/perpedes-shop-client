@@ -5,8 +5,8 @@ import { ChevronLeft, Check } from "lucide-react";
 import { Spinner } from "@/components/shared/spinner";
 import { motion } from "framer-motion";
 import { Separator } from "@/components/shared/separator";
-import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
+import { useUserQuery } from "@/hooks/useUser";
 
 interface OrderDetailProps {
   orderNumber: string;
@@ -16,7 +16,7 @@ interface OrderDetailProps {
 export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
   const { t } = useTranslation();
 
-  const { user } = useAuth();
+  const { data } = useUserQuery();
   const orderQuery = useOrderQuery(orderNumber);
 
   if (orderQuery.isPending) {
@@ -79,8 +79,8 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
               <p>
                 {order.shippingAddress.postalCode} {order.shippingAddress.city}
               </p>
-              <p>{user?.contactPerson}</p>
-              <p>{user?.email}</p>
+              <p>{data?.contactPerson ?? "N/A"}</p>
+              <p>{data?.username}</p>
             </div>
           </div>
 

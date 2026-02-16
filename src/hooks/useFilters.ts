@@ -24,7 +24,7 @@ export function useFilterVariationFunctions() {
   return useQuery<ProductVariationFilterValue>({
     queryKey: ["filters", "variation-functions"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/filters/variation-functions");
+      const response = await axiosInstance.get("/public/filters/variation-functions");
 
       return response.data;
     },
@@ -35,7 +35,7 @@ export function useFilterSoleTypes() {
   return useQuery<ProductFilterValue>({
     queryKey: ["filters", "sole-types"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/filters/sole-types");
+      const response = await axiosInstance.get("/public/filters/sole-types");
 
       return response.data;
     },
@@ -46,7 +46,7 @@ export function useFilterShoeTypes() {
   return useQuery<ProductFilterValue>({
     queryKey: ["filters", "shoe-types"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/filters/shoe-types");
+      const response = await axiosInstance.get("/public/filters/shoe-types");
 
       return response.data;
     },
@@ -57,7 +57,7 @@ export function useFilterInnerLinings() {
   return useQuery<ProductFilterValue>({
     queryKey: ["filters", "inner-linings"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/filters/inner-linings");
+      const response = await axiosInstance.get("/public/filters/inner-linings");
 
       return response.data;
     },
@@ -68,7 +68,7 @@ export function useFilterColors() {
   return useQuery<ProductFilterValue>({
     queryKey: ["filters", "colors"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/filters/colors");
+      const response = await axiosInstance.get("/public/filters/colors");
 
       return response.data;
     },
@@ -79,7 +79,7 @@ export function useFilterClosureSystems() {
   return useQuery<ProductFilterValue>({
     queryKey: ["filters", "closure-systems"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/filters/closure-systems");
+      const response = await axiosInstance.get("/public/filters/closure-systems");
 
       return response.data;
     },
@@ -90,7 +90,7 @@ export function useFilters() {
   return useQuery<Filters>({
     queryKey: ["filters", "all"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/filters/all");
+      const response = await axiosInstance.get("/public/filters/all");
 
       return response.data;
     },

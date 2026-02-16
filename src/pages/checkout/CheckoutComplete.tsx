@@ -14,10 +14,10 @@ import {
 } from "@/components/shared/card";
 import { Spinner } from "@/components/shared/spinner";
 import { Separator } from "@/components/shared/separator";
-import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import type { PaymentMethodItem, ShippingMethodItem } from "./Checkout";
 import { useTranslation } from "react-i18next";
+import { useUserQuery } from "@/hooks/useUser";
 
 export const CheckoutComplete = ({
   shippingMethod,
@@ -29,22 +29,22 @@ export const CheckoutComplete = ({
   const { t } = useTranslation();
 
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { data } = useUserQuery();
   const { products, clearCart } = useCart();
 
   const placeOrderMutation = usePlaceOrderMutation();
 
   useEffect(() => {
-    if (!user || !shippingMethod || !paymentMethod) return;
+    if (!data || !shippingMethod || !paymentMethod) return;
 
     placeOrderMutation.mutate(
       {
-        customerId: user.id.toString(),
+        customerId: data.id.toString(),
         shippingAddress: {
-          companyName: user.name,
-          street: user.street,
-          postalCode: user.zip.toString(),
-          city: user.city,
+          companyName: data.username,
+          street: "",
+          postalCode: "",
+          city: "",
           country: "Deutschland",
         },
         shippingMethodCode: shippingMethod.id,
@@ -59,7 +59,7 @@ export const CheckoutComplete = ({
             unit: product.unit,
             quantity: product.quantity,
             unitPrice: parseFloat(
-              product.price ? product.price.amount.replace(",", ".") : "0"
+              product.price ? product.price.amount.replace(",", ".") : "0",
             ),
             imageId: product.images[0]?.id,
           };
@@ -69,9 +69,9 @@ export const CheckoutComplete = ({
         onSuccess: () => {
           clearCart();
         },
-      }
+      },
     );
-  }, [user, shippingMethod, paymentMethod]);
+  }, [data, shippingMethod, paymentMethod]);
 
   if (placeOrderMutation.isPending) {
     return (

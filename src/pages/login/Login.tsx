@@ -9,26 +9,34 @@ import { Button } from "@/components/shared/button";
 import { Card, CardContent } from "@/components/shared/card";
 import { Input } from "@/components/shared/input";
 import { Label } from "@/components/shared/label";
+import { useLoginUserMutation } from "@/hooks/useUser";
 
 export const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const { loginUser, isLoading } = useAuth();
+  const { mutate: login, isPending } = useLoginUserMutation();
+  const { storeUser } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      await loginUser(email, password);
-      toast.success("Logged in successfully!");
-      navigate("/");
-    } catch (error: any) {
-      if (error.message) {
-        toast.error(error.message);
-      }
-    }
+    login(
+      { username, password },
+      {
+        onSuccess: (data) => {
+          storeUser(data.accessToken);
+          toast.success("Logged in successfully!");
+          navigate("/");
+        },
+        onError: (error) => {
+          console.log(error);
+          //@ts-ignore
+          toast(error.response.data.message);
+        },
+      },
+    );
   };
 
   return (
@@ -46,14 +54,14 @@ export const Login = () => {
                     </p>
                   </div>
                   <div className="grid gap-3">
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="username">Email</Label>
                     <Input
                       id="email"
                       type="text"
                       placeholder="Email"
                       required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
                     />
                   </div>
                   <div className="grid gap-3">
@@ -70,9 +78,9 @@ export const Login = () => {
                   <Button
                     type="submit"
                     className="w-full cursor-pointer"
-                    disabled={isLoading}
+                    disabled={isPending}
                   >
-                    {isLoading ? "Logging in..." : "Login"}
+                    {isPending ? "Logging in..." : "Login"}
                   </Button>
                 </div>
               </form>

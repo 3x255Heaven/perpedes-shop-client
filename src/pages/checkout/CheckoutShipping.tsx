@@ -2,10 +2,10 @@ import { Summary } from "@/components/partials/Summary";
 import { Button } from "@/components/shared/button";
 import { Card, CardContent } from "@/components/shared/card";
 import { ChevronLeft, ChevronRight, Truck } from "lucide-react";
-import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import type { ShippingMethodItem } from "./Checkout";
 import { useTranslation } from "react-i18next";
+import { useUserQuery } from "@/hooks/useUser";
 
 export const CheckoutShipping = ({
   onBack,
@@ -19,7 +19,7 @@ export const CheckoutShipping = ({
   setSelectedShippingMethod: (data: ShippingMethodItem) => void;
 }) => {
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { data } = useUserQuery();
   const { total } = useCart();
 
   return (
@@ -29,12 +29,14 @@ export const CheckoutShipping = ({
           <CardContent className="p-4">
             <h3 className="font-semibold mb-2">{t("shipping_address")}</h3>
             <div className="flex flex-col text-sm gap-1 text-gray-600">
-              <p>{user?.name}</p>
-              <p>{user?.street}</p>
               <p>
-                {user?.zip} {user?.city}
+                {data?.firstName} {data?.lastName}
               </p>
-              <p>{user?.id}</p>
+              <p>{data?.street ?? "N/A"}</p>
+              <p>
+                {data?.zip} {data?.city ?? "N/A"}
+              </p>
+              <p>{data?.id}</p>
             </div>
           </CardContent>
         </Card>
