@@ -65,5 +65,6 @@
   "items": "Artikel",
   "empty_order": "Sie haben noch keine Bestellungen getätigt.",
   "back_to_order_history": "Zurück zur Bestellübersicht",
-  "order_details": "Bestelldetails"
+  "order_details": "Bestelldetails",
+  "country": "Land"
 }

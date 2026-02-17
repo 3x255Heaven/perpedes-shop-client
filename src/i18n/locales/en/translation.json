@@ -65,5 +65,6 @@
   "items": "Items",
   "empty_order": "You haven’t placed any orders yet.",
   "back_to_order_history": "Back to Order History",
-  "order_details": "Order Details"
+  "order_details": "Order Details",
+  "country": "Land"
 }

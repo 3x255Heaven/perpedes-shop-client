@@ -24,6 +24,7 @@ import {
 import { useNavigate } from "react-router";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
+import { useUserQuery } from "@/hooks/useUser";
 
 export function CartDrawer() {
   const { t } = useTranslation();
@@ -31,6 +32,7 @@ export function CartDrawer() {
   const [open, setOpen] = React.useState(false);
   const { products, total, removeItem } = useCart();
   const { isAuthenticated } = useAuth();
+  const { data } = useUserQuery();
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
@@ -113,7 +115,10 @@ export function CartDrawer() {
             <>
               <div className="flex justify-between items-center">
                 <p className="text-lg font-medium">Total</p>
-                <p className="text-xl font-bold">€{total}</p>
+                <p className="text-xl font-bold">
+                  <span>{data?.client?.country === "CH" ? "₣" : "€"}</span>
+                  {total}
+                </p>
               </div>
               <Button
                 className="w-full"

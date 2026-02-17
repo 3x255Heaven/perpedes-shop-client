@@ -41,6 +41,10 @@ export const PersonalInformation = () => {
                 <p className="font-medium">{data?.client?.street1 ?? "N/A"}</p>
               </div>
               <div>
+                <p className="text-gray-500">{t("country")}</p>
+                <p className="font-medium">{data?.client?.country ?? "N/A"}</p>
+              </div>
+              <div>
                 <p className="text-gray-500">{t("city")}</p>
                 <p className="font-medium">
                   {data?.client?.zipCode} {data?.client?.place ?? "N/A"}

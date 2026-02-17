@@ -32,7 +32,8 @@ export const CheckoutShipping = ({
               <p>{data?.client?.displayName ?? "N/A"}</p>
               <p>{data?.client?.street1 ?? "N/A"}</p>
               <p>
-                {data?.client?.zipCode} {data?.client?.place ?? "N/A"}
+                {data?.client?.country}-{data?.client?.zipCode}{" "}
+                {data?.client?.place ?? "N/A"}
               </p>
             </div>
           </CardContent>
