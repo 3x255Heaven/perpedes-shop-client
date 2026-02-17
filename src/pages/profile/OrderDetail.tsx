@@ -123,7 +123,8 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
                       </div>
                     </div>
                     <p className="self-center font-bold text-sm sm:text-base">
-                      €{item.unitPrice}
+                      <span>{data?.client?.country === "CH" ? "₣" : "€"}</span>
+                      {item.unitPrice}
                     </p>
                   </CardContent>
                 </Card>
@@ -136,7 +137,10 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
           <div className="flex flex-col w-full gap-2 justify-center items-center">
             <div className="flex justify-between w-full text-sm">
               <p>{t("subtotal")}</p>
-              <p>€{order.totals.subtotal}</p>
+              <p>
+                <span>{data?.client?.country === "CH" ? "₣" : "€"}</span>
+                {order.totals.subtotal}
+              </p>
             </div>
             <div className="flex justify-between w-full text-sm">
               <p>{t("shipping")}</p>
@@ -144,7 +148,10 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
             </div>
             <div className="flex justify-between w-full text-2xl font-medium">
               <p>{t("total_amount")}</p>
-              <p>€{order.totals.total}</p>
+              <p>
+                <span>{data?.client?.country === "CH" ? "₣" : "€"}</span>
+                {order.totals.total}
+              </p>
             </div>
           </div>
         </CardContent>

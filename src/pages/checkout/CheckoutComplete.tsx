@@ -170,7 +170,10 @@ export const CheckoutComplete = ({
                       {t("width")}: {product.width} {t("size")}: {product.size}
                     </p>
                   </div>
-                  <p className="self-center font-bold">{product.unitPrice}</p>
+                  <p className="self-center font-bold">
+                    <span>{data?.client?.country === "CH" ? "₣" : "€"}</span>
+                    {product.unitPrice}
+                  </p>
                 </div>
               </div>
             ))}
@@ -181,7 +184,10 @@ export const CheckoutComplete = ({
           <div className="flex flex-col w-full gap-2 justify-center items-center">
             <div className="flex justify-between w-full text-sm">
               <p>{t("subtotal")}</p>
-              <p>€{placeOrderMutation.data.totals.subtotal}</p>
+              <p>
+                <span>{data?.client?.country === "CH" ? "₣" : "€"}</span>
+                {placeOrderMutation.data.totals.subtotal}
+              </p>
             </div>
 
             <div className="flex justify-between w-full text-sm">
@@ -191,7 +197,10 @@ export const CheckoutComplete = ({
 
             <div className="flex justify-between w-full text-2xl font-medium">
               <p>{t("total_amount")}</p>
-              <p>€{placeOrderMutation.data.totals.total}</p>
+              <p>
+                <span>{data?.client?.country === "CH" ? "₣" : "€"}</span>
+                {placeOrderMutation.data.totals.total}
+              </p>
             </div>
           </div>
         </CardContent>
