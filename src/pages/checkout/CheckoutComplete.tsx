@@ -39,7 +39,7 @@ export const CheckoutComplete = ({
 
     placeOrderMutation.mutate(
       {
-        customerId: data.id.toString(),
+        customerId: data.client?.clientId,
         shippingAddress: {
           companyName: data.client?.displayName,
           street: data.client?.street1,
