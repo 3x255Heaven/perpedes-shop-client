@@ -6,18 +6,26 @@ import {
   useEffect,
   type ReactNode,
 } from "react";
+
 import type { CartProductItem } from "@/hooks/useProducts";
 
-type CartItem = CartProductItem & { quantity: number };
+type CartItem = CartProductItem & {
+  quantity: number;
+  note?: string;
+};
 
 type CartContextType = {
   products: CartItem[];
   total: number;
+
   addItem: (item: CartProductItem) => void;
   removeItem: (id: number) => void;
   clearCart: () => void;
+
   increaseQuantity: (id: number) => void;
   decreaseQuantity: (id: number) => void;
+
+  updateNote: (id: number, note: string) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -42,11 +50,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
       if (existing) {
         return prev.map((p) =>
-          p.id === item.id ? { ...p, quantity: p.quantity + 1 } : p
+          p.id === item.id ? { ...p, quantity: p.quantity + 1 } : p,
         );
       }
 
-      return [...prev, { ...item, quantity: 1 }];
+      return [
+        ...prev,
+        {
+          ...item,
+          quantity: 1,
+          note: "",
+        },
+      ];
     });
   };
 
@@ -58,9 +73,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setProducts((prev) =>
       prev.map((product) =>
         product.id === id
-          ? { ...product, quantity: product.quantity + 1 }
-          : product
-      )
+          ? {
+              ...product,
+              quantity: product.quantity + 1,
+            }
+          : product,
+      ),
     );
   };
 
@@ -68,9 +86,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setProducts((prev) =>
       prev.map((product) =>
         product.id === id
-          ? { ...product, quantity: Math.max(1, product.quantity - 1) }
-          : product
-      )
+          ? {
+              ...product,
+              quantity: Math.max(1, product.quantity - 1),
+            }
+          : product,
+      ),
+    );
+  };
+
+  const updateNote = (id: number, note: string) => {
+    setProducts((prev) =>
+      prev.map((product) =>
+        product.id === id
+          ? {
+              ...product,
+              note,
+            }
+          : product,
+      ),
     );
   };
 
@@ -84,20 +118,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
         return sum + (amountNum || 0) * product.quantity;
       }, 0),
-    [products]
+    [products],
   );
 
   const value = useMemo(
     () => ({
       products,
       total,
+
       addItem,
       removeItem,
       clearCart,
+
       increaseQuantity,
       decreaseQuantity,
+
+      updateNote,
     }),
-    [products, total]
+    [products, total],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
@@ -105,6 +143,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart() {
   const context = useContext(CartContext);
-  if (!context) throw new Error("useCart must be used within a CartProvider");
+
+  if (!context) {
+    throw new Error("useCart must be used within a CartProvider");
+  }
+
   return context;
 }

@@ -13,6 +13,8 @@ import { Products } from "@/pages/products/Products";
 import { Product } from "@/pages/products/Product";
 import { Checkout } from "@/pages/checkout/Checkout";
 import { Profile } from "@/pages/profile/Profile";
+import { ForgotPassword } from "@/pages/password/ForgotPassword";
+import { ResetPassword } from "@/pages/password/ResetPassword";
 
 import { Toaster } from "@/components/shared/sonner";
 import { ProtectedRoute } from "@/components/routes/ProtectedRoute";
@@ -29,6 +31,22 @@ const router = createBrowserRouter([
     element: (
       <PublicRoute>
         <Login />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/forgot-password",
+    element: (
+      <PublicRoute>
+        <ForgotPassword />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "/reset-password/:token",
+    element: (
+      <PublicRoute>
+        <ResetPassword />
       </PublicRoute>
     ),
   },
@@ -70,5 +88,5 @@ createRoot(document.getElementById("root")!).render(
         </CartProvider>
       </AuthProvider>
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );

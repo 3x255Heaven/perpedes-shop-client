@@ -82,6 +82,15 @@ export const Login = () => {
                   >
                     {isPending ? "Logging in..." : "Login"}
                   </Button>
+
+                  <div
+                    className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4 cursor-pointer"
+                    onClick={() => {
+                      navigate("/forgot-password");
+                    }}
+                  >
+                    Forgot Password?
+                  </div>
                 </div>
               </form>
               <div className="bg-muted relative hidden md:block">

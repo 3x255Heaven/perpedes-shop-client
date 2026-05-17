@@ -120,6 +120,9 @@ export const OrderDetail = ({ orderNumber, onBack }: OrderDetailProps) => {
                         <p className="text-gray-600 text-sm">
                           {t("items")}: {item.articleNumber}
                         </p>
+                        <p className="text-gray-600 text-sm whitespace-normal break-all">
+                          {t("note")}: {item.note}
+                        </p>
                       </div>
                     </div>
                     <p className="self-center font-bold text-sm sm:text-base">

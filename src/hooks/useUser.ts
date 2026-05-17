@@ -37,6 +37,15 @@ type LoginResponse = {
   accessToken: string;
 };
 
+type ForgotPasswordPayload = {
+  email: string;
+};
+
+type ResetPasswordPayload = {
+  token: string;
+  newPassword: string;
+};
+
 export function useUserQuery() {
   return useQuery({
     queryKey: ["user", "profile"],
@@ -63,6 +72,30 @@ export const useLogoutUserMutation = () => {
   return useMutation<void, AxiosError, void>({
     mutationFn: async () => {
       await axiosInstance.post("/public/auth/logout");
+    },
+  });
+};
+
+export const useForgotPasswordMutation = () => {
+  return useMutation<LoginResponse, Error, ForgotPasswordPayload>({
+    mutationFn: async (payload) => {
+      const response = await axiosInstance.post<LoginResponse>(
+        "/public/auth/forgot-password",
+        payload,
+      );
+      return response.data;
+    },
+  });
+};
+
+export const useResetPasswordMutation = () => {
+  return useMutation<LoginResponse, Error, ResetPasswordPayload>({
+    mutationFn: async (payload) => {
+      const response = await axiosInstance.post<LoginResponse>(
+        "/public/auth/reset-password",
+        payload,
+      );
+      return response.data;
     },
   });
 };
