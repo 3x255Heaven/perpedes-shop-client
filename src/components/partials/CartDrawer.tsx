@@ -83,6 +83,9 @@ export function CartDrawer() {
                   />
                   <div className="flex-1 text-center">
                     <h4 className="font-medium line-clamp-1">{product.name}</h4>
+                    <p className="text-sm text-gray-500">
+                      {product.articleNumber}
+                    </p>
                     <p className="text-sm text-muted-foreground">
                       {t("quantity")}: {product.quantity}
                     </p>

@@ -2,14 +2,22 @@ import { Summary } from "@/components/partials/Summary";
 import { Badge } from "@/components/shared/badge";
 import { Button } from "@/components/shared/button";
 import { Card, CardContent } from "@/components/shared/card";
+import { Input } from "@/components/shared/input";
 import { useCart } from "@/context/CartContext";
 import { ChevronRight, Trash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 export const CheckoutCart = ({ onNext }: { onNext: () => void }) => {
   const { t } = useTranslation();
-  const { products, total, removeItem, increaseQuantity, decreaseQuantity } =
-    useCart();
+
+  const {
+    products,
+    total,
+    removeItem,
+    increaseQuantity,
+    decreaseQuantity,
+    updateNote,
+  } = useCart();
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
@@ -23,12 +31,15 @@ export const CheckoutCart = ({ onNext }: { onNext: () => void }) => {
                   alt={product.name}
                   className="w-44 h-44 object-contain"
                 />
+
                 <div className="flex flex-col items-start justify-center gap-4">
                   <div className="flex flex-col items-left justify-center gap-1">
                     <p className="font-semibold">{product.name}</p>
+
                     <p className="text-sm text-gray-500">
                       {product.articleNumber}
                     </p>
+
                     <p className="text-sm">HVM: {product.hmv}</p>
                   </div>
 
@@ -44,7 +55,9 @@ export const CheckoutCart = ({ onNext }: { onNext: () => void }) => {
                       >
                         −
                       </Button>
+
                       <div className="px-2 text-sm">{product.quantity}</div>
+
                       <Button
                         variant="ghost"
                         size="icon"
@@ -66,6 +79,15 @@ export const CheckoutCart = ({ onNext }: { onNext: () => void }) => {
                     >
                       <Trash2 className="!h-[26px] !w-[18px]" />
                     </Badge>
+                  </div>
+
+                  <div className="w-full">
+                    <Input
+                      placeholder={t("note")}
+                      value={product.note || ""}
+                      onChange={(e) => updateNote(product.id, e.target.value)}
+                      className="resize-none"
+                    />
                   </div>
 
                   <div className="text-right font-semibold text-gray-700 text-3xl">

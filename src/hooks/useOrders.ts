@@ -19,6 +19,7 @@ export type OrderItem = {
   quantity: number;
   unitPrice: number;
   imageId: number;
+  note: string;
 };
 
 export type PlaceOrderPayload = {
@@ -59,6 +60,7 @@ export interface PlaceOrderResponse {
     unitPrice: string;
     totalPrice: string;
     imageUrl: string;
+    note: string;
   }[];
   totals: {
     subtotal: string;
@@ -97,6 +99,7 @@ export type OrderResponse = {
     unitPrice: string;
     totalPrice: string;
     imageUrl: string;
+    note: string;
   }[];
   totals: {
     subtotal: string;
@@ -105,26 +108,19 @@ export type OrderResponse = {
   };
 };
 
-export function useOrdersQuery() {
-  return useQuery<OrderResponse[]>({
+type OrdersResponse = {
+  totalPages: number;
+  totalElements: number;
+  orders: OrderResponse[];
+};
+
+export function useCustomerOrdersQuery() {
+  return useQuery<OrdersResponse>({
     queryKey: ["orders"],
     queryFn: async () => {
-      const response = await axiosInstance.get("/public/orders");
+      const response = await axiosInstance.get(`/user/orders`);
       return response.data;
     },
-  });
-}
-
-export function useCustomerOrdersQuery(customerId: string | undefined) {
-  return useQuery<OrderResponse[]>({
-    queryKey: ["orders", customerId],
-    queryFn: async () => {
-      const response = await axiosInstance.get(
-        `/public/orders/customer/${customerId}`,
-      );
-      return response.data;
-    },
-    enabled: !!customerId,
   });
 }
 
@@ -132,7 +128,7 @@ export function useOrderQuery(orderId: string | undefined) {
   return useQuery<OrderResponse>({
     queryKey: ["orders", orderId],
     queryFn: async () => {
-      const response = await axiosInstance.get(`/public/orders/${orderId}`);
+      const response = await axiosInstance.get(`/user/orders/${orderId}`);
       return response.data;
     },
     enabled: !!orderId,
@@ -143,7 +139,7 @@ export const usePlaceOrderMutation = () => {
   return useMutation<PlaceOrderResponse, Error, PlaceOrderPayload>({
     mutationFn: async (payload) => {
       const { data } = await axiosInstance.post<PlaceOrderResponse>(
-        "/public/orders",
+        "/user/orders",
         payload,
       );
       return data;

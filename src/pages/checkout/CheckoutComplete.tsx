@@ -15,7 +15,6 @@ import {
 import { Spinner } from "@/components/shared/spinner";
 import { Separator } from "@/components/shared/separator";
 import { useCart } from "@/context/CartContext";
-import type { PaymentMethodItem, ShippingMethodItem } from "./Checkout";
 import { useTranslation } from "react-i18next";
 import { useUserQuery } from "@/hooks/useUser";
 
@@ -23,8 +22,8 @@ export const CheckoutComplete = ({
   shippingMethod,
   paymentMethod,
 }: {
-  shippingMethod: ShippingMethodItem;
-  paymentMethod: PaymentMethodItem;
+  shippingMethod: string | null;
+  paymentMethod: string | null;
 }) => {
   const { t } = useTranslation();
 
@@ -47,8 +46,8 @@ export const CheckoutComplete = ({
           city: data.client?.place,
           country: "Deutschland",
         },
-        shippingMethodCode: shippingMethod.id,
-        paymentMethodCode: paymentMethod.id,
+        shippingMethodCode: shippingMethod,
+        paymentMethodCode: paymentMethod,
         items: products.map((product) => {
           return {
             variationId: product.id,
@@ -62,6 +61,7 @@ export const CheckoutComplete = ({
               product.price ? product.price.amount.replace(",", ".") : "0",
             ),
             imageId: product.images[0]?.id,
+            note: product.note ?? "",
           };
         }),
       },
@@ -167,13 +167,20 @@ export const CheckoutComplete = ({
                   <div className="flex flex-col gap-1">
                     <p>{product.productName}</p>
                     <p className="text-gray-600">
-                      {t("width")}: {product.width} {t("size")}: {product.size}
+                      <span className="font-bold">{t("width")}:</span>{" "}
+                      {product.width}{" "}
+                      <span className="font-bold">{t("size")}:</span>{" "}
+                      {product.size}
+                    </p>
+                    <p className="text-gray-600 whitespace-normal break-all">
+                      <span className="font-bold">{t("note")}:</span>{" "}
+                      {product.note}
+                    </p>
+                    <p className="font-bold">
+                      <span>{data?.client?.country === "CH" ? "₣" : "€"}</span>
+                      {product.unitPrice}
                     </p>
                   </div>
-                  <p className="self-center font-bold">
-                    <span>{data?.client?.country === "CH" ? "₣" : "€"}</span>
-                    {product.unitPrice}
-                  </p>
                 </div>
               </div>
             ))}

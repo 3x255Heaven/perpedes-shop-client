@@ -12,7 +12,6 @@ import {
 } from "@/components/shared/empty";
 import { ShoppingBag } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useUserQuery } from "@/hooks/useUser";
 
 interface OrderHistoryProps {
   onSelectOrder: (orderNumber: string) => void;
@@ -20,9 +19,8 @@ interface OrderHistoryProps {
 
 export const OrderHistory = ({ onSelectOrder }: OrderHistoryProps) => {
   const { t } = useTranslation();
-  const { data } = useUserQuery();
 
-  const ordersQuery = useCustomerOrdersQuery(data?.id.toString());
+  const ordersQuery = useCustomerOrdersQuery();
 
   if (ordersQuery.isPending) {
     return (
@@ -43,7 +41,7 @@ export const OrderHistory = ({ onSelectOrder }: OrderHistoryProps) => {
     );
   }
 
-  if (ordersQuery.data.length === 0) {
+  if (ordersQuery.data.orders.length === 0) {
     return (
       <Empty>
         <EmptyHeader>
@@ -59,7 +57,7 @@ export const OrderHistory = ({ onSelectOrder }: OrderHistoryProps) => {
 
   return (
     <div className="flex flex-col gap-4 h-[40vh] overflow-y-scroll p-6">
-      {ordersQuery.data.map((order) => (
+      {ordersQuery.data.orders.map((order) => (
         <Card
           key={order.orderNumber}
           className="cursor-pointer hover:shadow-md transition-shadow"

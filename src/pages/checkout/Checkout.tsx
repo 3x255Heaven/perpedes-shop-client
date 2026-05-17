@@ -7,13 +7,9 @@ import { CheckoutShipping } from "./CheckoutShipping";
 import { CheckoutPayment } from "./CheckoutPayment";
 import { CheckoutComplete } from "./CheckoutComplete";
 import { useTranslation } from "react-i18next";
-
-export type ShippingMethod = "standard" | "express";
-export type ShippingMethodItem = {
-  id: ShippingMethod;
-  name: string;
-  value: string;
-};
+import { useCart } from "@/context/CartContext";
+import { Button } from "@/components/shared/button";
+import { useNavigate } from "react-router";
 
 export type PaymentMethod = "invoice" | "prepayment";
 export type PaymentMethodItem = {
@@ -24,7 +20,18 @@ export type PaymentMethodItem = {
 
 export const Checkout = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [checkoutStep, setCheckoutStep] = useState<1 | 2 | 3 | 4>(1);
+
+  const [selectedShippingMethod, setSelectedShippingMethod] = useState<
+    string | null
+  >(null);
+
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
+    string | null
+  >(null);
+
+  const { products } = useCart();
 
   const checkoutSteps = [
     {
@@ -41,19 +48,14 @@ export const Checkout = () => {
     { checkoutStepOrderNo: 4, label: t("complete"), icon: <Check size={16} /> },
   ];
 
-  const [selectedShippingMethod, setSelectedShippingMethod] =
-    useState<ShippingMethodItem>({
-      id: "standard",
-      name: "Standard Shipping",
-      value: "Delivery in 3-5 business days",
-    });
-
-  const [selectedPaymentMethod, setSelectedPaymentMethod] =
-    useState<PaymentMethodItem>({
-      id: "invoice",
-      name: "Invoice",
-      value: "Payment within 14 days",
-    });
+  if (products.length === 0 && checkoutStep !== 4) {
+    return (
+      <div className="h-[40vh] p-16 flex flex-col justify-center items-center text-center">
+        <p className="text-lg font-medium mb-4">{t("empty_cart_title")}</p>
+        <Button onClick={() => navigate("/")}>{t("continue_shopping")}</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-muted/20 flex flex-col justify-center items-center px-4 py-8 sm:px-6 md:px-8">
@@ -64,7 +66,7 @@ export const Checkout = () => {
 
         <div
           className={cn(
-            "flex flex-col md:flex-row lg:justify-center justify-start items-center gap-4 mb-8"
+            "flex flex-col md:flex-row lg:justify-center justify-start items-center gap-4 mb-8",
           )}
         >
           {checkoutSteps.map(({ checkoutStepOrderNo, label, icon }) => (
@@ -78,8 +80,8 @@ export const Checkout = () => {
                   checkoutStep > checkoutStepOrderNo
                     ? "bg-green-500 text-white border-green-500"
                     : checkoutStep === checkoutStepOrderNo
-                    ? "bg-black text-white border-black"
-                    : "border-gray-300 text-gray-500"
+                      ? "bg-black text-white border-black"
+                      : "border-gray-300 text-gray-500",
                 )}
               >
                 {checkoutStepOrderNo < checkoutStep ? (
@@ -93,7 +95,7 @@ export const Checkout = () => {
                   "text-xs sm:text-sm font-medium mt-1 md:mt-0 md:ml-2 text-center md:text-left",
                   checkoutStep > checkoutStepOrderNo
                     ? "text-black"
-                    : "text-gray-400"
+                    : "text-gray-400",
                 )}
               >
                 {label}

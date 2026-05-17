@@ -3,9 +3,9 @@ import { Button } from "@/components/shared/button";
 import { Card, CardContent } from "@/components/shared/card";
 import { ChevronLeft, ChevronRight, Truck } from "lucide-react";
 import { useCart } from "@/context/CartContext";
-import type { ShippingMethodItem } from "./Checkout";
 import { useTranslation } from "react-i18next";
 import { useUserQuery } from "@/hooks/useUser";
+import { useShippingMethods } from "@/hooks/useShipping";
 
 export const CheckoutShipping = ({
   onBack,
@@ -15,12 +15,25 @@ export const CheckoutShipping = ({
 }: {
   onNext: () => void;
   onBack: () => void;
-  selectedShippingMethod: ShippingMethodItem;
-  setSelectedShippingMethod: (data: ShippingMethodItem) => void;
+  selectedShippingMethod: string | null;
+  setSelectedShippingMethod: (code: string) => void;
 }) => {
   const { t } = useTranslation();
   const { data } = useUserQuery();
   const { total } = useCart();
+
+  const shippingMethodsQuery = useShippingMethods();
+
+  if (shippingMethodsQuery.isError || shippingMethodsQuery.data === undefined) {
+    return (
+      <div className="h-[40vh] p-16 flex flex-col justify-center items-center text-center">
+        <p className="text-lg font-medium mb-4">{t("something_went_wrong")}</p>
+        <Button onClick={() => window.location.reload()}>
+          {t("try_again")}
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
@@ -43,63 +56,41 @@ export const CheckoutShipping = ({
           <CardContent className="p-4 space-y-3">
             <h3 className="font-semibold mb-2">{t("shipping_method")}</h3>
 
-            <div
-              onClick={() => {
-                setSelectedShippingMethod({
-                  id: "standard",
-                  name: "Standard Shipping",
-                  value: "Delivery in 3-5 business days",
-                });
-              }}
-              className={`border rounded-lg p-3 flex items-center justify-between cursor-pointer ${
-                selectedShippingMethod.id === "standard"
-                  ? "border-green-500 bg-green-50"
-                  : "border-gray-200"
-              }`}
-            >
-              <div className="flex items-center justify-center gap-3">
-                <Truck className="text-gray-400" />
-                <div>
-                  <p className="font-medium">Standard Shipping</p>
-                  <p className="text-sm text-gray-500">
-                    Delivery in 3-5 business days
-                  </p>
+            {shippingMethodsQuery.data.map((shippingMethod) => {
+              return (
+                <div
+                  onClick={() => {
+                    setSelectedShippingMethod(shippingMethod.code);
+                  }}
+                  className={`border rounded-lg p-3 flex items-center justify-between cursor-pointer ${
+                    selectedShippingMethod === shippingMethod.code
+                      ? "border-green-500 bg-green-50"
+                      : "border-gray-200"
+                  }`}
+                >
+                  <div className="flex items-center justify-center gap-3">
+                    <Truck className="text-gray-400" />
+                    <div>
+                      <p className="font-medium">{shippingMethod.name}</p>
+                      <p className="text-sm text-gray-500">
+                        {shippingMethod.description}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="font-medium">{shippingMethod.cost}</p>
                 </div>
-              </div>
-              <p className="font-medium">Free</p>
-            </div>
-
-            {/* <div
-              onClick={() => {
-                setSelectedShippingMethod({
-                  id: "express",
-                  name: "Express Shipping",
-                  value: "Delivery in 1-2 business days",
-                });
-              }}
-              className={`border rounded-lg p-3 flex items-center justify-between cursor-pointer ${
-                selectedShippingMethod.id === "express"
-                  ? "border-green-500 bg-green-50"
-                  : "border-gray-200"
-              }`}
-            >
-              <div className="flex items-center justify-center gap-3">
-                <Box className="text-gray-400" />
-                <div>
-                  <p className="font-medium">Express Shipping</p>
-                  <p className="text-sm text-gray-500">
-                    Delivery in 1-2 business days
-                  </p>
-                </div>
-              </div>
-              <p className="font-medium">€9,99</p>
-            </div> */}
+              );
+            })}
           </CardContent>
         </Card>
       </div>
 
       <Summary total={total}>
-        <Button className="w-full mt-4" onClick={onNext}>
+        <Button
+          className="w-full mt-4"
+          onClick={onNext}
+          disabled={selectedShippingMethod === null}
+        >
           {t("continue_to_payment")} <ChevronRight />
         </Button>
         <Button variant="outline" className="w-full mt-2" onClick={onBack}>
